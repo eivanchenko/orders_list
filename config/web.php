@@ -3,7 +3,11 @@
 
 // Prepare bootstrapped components and modules
 $bootstrap = ['log'];   // Must be 1st bootstrapped component
-$modules = [];
+$modules = [
+    'orders' => [
+        'class' => 'app\modules\orders\OrdersModule'
+    ],
+];
 if (YII_ENV_DEV) {
     $bootstrap[] = 'debug';  // Must be 2nd bootstrapped component
     $bootstrap[] = 'gii';
@@ -101,6 +105,10 @@ return [
             'enableAutoLogin' => true,
             'loginUrl' => ['user/login'],
         ],
+        'formatter' => [
+            'dateFormat' => 'yyyy-mm-dd hh:mm:ss',
+
+        ]
     ],
     'params' => [
         'mail.from' => ['no-reply@example.com' => 'My Application'],

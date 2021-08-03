@@ -14,7 +14,7 @@ class OrderController extends Controller
 
         $pagination = new Pagination([
             'defaultPageSize' => 100,
-            'totalCount' => $query->count(),    
+            'totalCount' => $query->count(),
             'pageSize' => 100
         ]);
 
