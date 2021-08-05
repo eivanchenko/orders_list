@@ -14,7 +14,7 @@ class Services extends ActiveRecord
     public function rules()
     {
         return [
-
+            [['id',], 'integer'],
             ['name', 'string', 'max' => 350],
         ];
     }

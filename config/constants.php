@@ -12,4 +12,8 @@ class GlobalsConst
     const STATUS_COMPLETED = 'Completed';
     const STATUS_CANCELED = 'Canceled';
     const STATUS_ERROR = 'Error';
+    // Search types
+    const SEARCH_ORDER_ID = 1;
+    const SEARCH_LINK = 2;
+    const SEARCH_USER = 3;
 }
