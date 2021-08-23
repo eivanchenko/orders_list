@@ -27,5 +27,4 @@ class ServicesSearch extends Services
     {
         return Model::scenarios();
     }
-
 }

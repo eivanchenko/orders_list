@@ -15,15 +15,17 @@ class OrdersSearch extends Orders
     public $searchstring;
     public $service_type;
     public $service_id;
+    public $search_type;
+    public $search_word;
 
 
 
     public function rules()
     {
         return [
-            [['id', 'user_id',], 'integer'],
-            [['link', 'mode'], 'string'],
-            [['full_name', 'status', 'service_type','service_id'], 'safe']
+            [['user_id',], 'integer'],
+            [['mode'], 'string'],
+            [['status', 'service_type', 'service_id', 'search_type', 'search_word'], 'safe']
         ];
     }
 
@@ -72,19 +74,35 @@ class OrdersSearch extends Orders
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
-        $query->andWhere(
-            'CONCAT_WS(" ", users.first_name, users.last_name) LIKE  "%' . $this->full_name . '%" ' .
-                ' OR users.first_name LIKE "%' . $this->full_name . '%" ' .
-                'OR users.last_name LIKE "%' . $this->full_name . '%"'
-        );
+
         if ($this->service_type == 0) {
             $this->service_type = '';
         }
-        $query->andFilterWhere(['=', 'orders.id', $this->id]);
-        $query->andFilterWhere(['like', 'orders.link', $this->link]);
         $query->andFilterWhere(['=', 'services.id', $this->service_type]);
         $query->andFilterWhere(['=', 'orders.status', $this->status]);
         $query->andFilterWhere(['=', 'orders.mode', $this->mode]);
+
+        switch ($this->search_type) {
+            case 1:
+                $query->andFilterWhere(['=', 'orders.id', $this->search_word]);
+                return $dataProvider;
+                break;
+            case 2:
+                $query->andFilterWhere(['like', 'orders.link', $this->search_word]);
+                return $dataProvider;
+                break;
+            case 3:
+                $query->andWhere(
+                    'CONCAT_WS(" ", users.first_name, users.last_name) LIKE  "%' . $this->search_word . '%" ' .
+                        ' OR users.first_name LIKE "%' . $this->search_word . '%" ' .
+                        'OR users.last_name LIKE "%' . $this->search_word . '%"'
+                );
+                return $dataProvider;
+                break;
+        }
+
+        // $query->andFilterWhere(['=', 'orders.id', $this->id]);
+        // $query->andFilterWhere(['like', 'orders.link', $this->link]);
 
         return $dataProvider;
     }

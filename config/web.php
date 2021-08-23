@@ -27,6 +27,7 @@ return [
         '@bower' => '/var/www/vendor/bower-asset',
         '@npm' => '/var/www/vendor/npm-asset',
     ],
+    'defaultRoute' => 'orders',
     'basePath' => '/var/www/html',
     'bootstrap' => $bootstrap,
     'modules' => $modules,

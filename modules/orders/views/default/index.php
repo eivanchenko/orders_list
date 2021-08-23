@@ -12,15 +12,9 @@ use yii\db\Query;
 use app\modules\orders\models\Orders;
 use app\modules\orders\models\Services;
 
-use function PHPSTORM_META\map;
-
 $service_list = Orders::getServicesTypesCount();
-$coun = Orders::getUserServiceCount(1, 5);
-// $countZero = $service_list[1]['name'] . '---' . $service_list[1]['count'];
-//  foreach($service_list as $i) {
-//     print_r($i);
+
 ?>
-<h1>OrdersModule</h1>
 <?= $this->render('_search', ['model' => $searchModel]) ?>
 
 <div class="container-fluid">
@@ -29,12 +23,13 @@ $coun = Orders::getUserServiceCount(1, 5);
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'summary' => '{begin} to {end} of {totalCount}',
-        'layout' => "{summary}\n{items}\n{pager}",
+        'layout' => "{items}\n<div class='row'><div class='col-sm-8'>{pager}</div><div class='col-sm-4 pagination-counters'>{summary}</div></div>",
         'columns' => [
             'id',
             'full_name:html',
             'link', 'quantity', [
                 'attribute' => 'service_type', 'format' => 'html',
+                'headerOptions' => ['class' => 'dropdown-th'],
                 // 'value' => function ($model) {
                 //     $service_list = $model::getList($model->user_id);
                 //     return  $service_list[$model->service_id]['count'].'  '. $service_list[$model->service_id]['name'];
@@ -43,21 +38,20 @@ $coun = Orders::getUserServiceCount(1, 5);
                 'value' => function ($model) {
                     return Orders::getUserServiceCount($model->user_id, $model->service_id);
                 },
-                'label' => 'Service',  'filter' => Html::activeDropDownList($searchModel, 'service_type', ArrayHelper::getColumn(Orders::getServicesTypesCount(), function ($elem) {
+                'label' => 'Service',
+                'filter' => Html::activeDropDownList($searchModel, 'service_type', ArrayHelper::map(Orders::getServicesTypesCount(), 'id',  function ($model) {
                     // return $elem['name'];
-                    return $elem['count'] . ' ' . $elem['name'];
+                    return $model['count'] . ' ' . $model['name'];
                 }), [
-                    'text' => 'Test text',
+                    'prompt' => 'All',
                     'class' => 'btn btn-th btn-default dropdown-toggle',
-                    'options' => [
-                        'value1' => 'NONE TEST',
-                    ]
                 ]),
+                // 'filterInputOptions' => ['class' => 'dropdown-th', 'id' => null]
                 // 'label' => 'Service',  'filter' => Html::activeDropDownList($searchModel, 'service_type', ArrayHelper::map(Services::find()->asArray()->all(), 'id', 'name'), ['class' => 'btn btn-th btn-default dropdown-toggle', 'prompt' => 'All']),
             ],
             ['attribute' => 'status', 'format' => 'text', 'label' => 'Status',  'value' => function ($model) {
                 return $model->getStatus();
-            }], ['attribute' => 'mode', 'format' => 'html', 'label' => 'Mode', 'filterInputOptions' => ['class' => 'btn btn-th btn-default dropdown-toggle',  'prompt' => 'All'], 'filter' => ['0' => 'Manual', '1' => 'Auto'], 'value' => function ($model) {
+            }], ['attribute' => 'mode', 'headerOptions' => ['class' => 'dropdown-th'], 'format' => 'html', 'label' => 'Mode', 'filterInputOptions' => ['class' => 'btn btn-th btn-default dropdown-toggle',  'prompt' => 'All'], 'filter' => ['0' => 'Manual', '1' => 'Auto'], 'value' => function ($model) {
                 return $model->getMode();
             }],           [
                 'attribute' => 'created_at',
@@ -67,8 +61,6 @@ $coun = Orders::getUserServiceCount(1, 5);
         ],
         'tableOptions' => ['class' => 'table order-table'],
     ]); ?>
-
-
 
 
 </div>

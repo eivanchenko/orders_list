@@ -57,7 +57,7 @@ class Orders extends ActiveRecord
         // $data = Yii::$app->db->createCommand('SELECT `orders`.`id`, `orders`.`count`, `services`.`name` FROM ((SELECT `service_id` AS `id`, count(*) AS `count` FROM `orders` WHERE `user_id` = ' . $user_id . '  GROUP BY `service_id`) UNION ( SELECT 0, count(*) FROM `orders` )) `orders` LEFT JOIN `services` ON orders.id = services.id ORDER BY `services`.`id`')->queryAll();
         $data = Yii::$app->db->createCommand('SELECT `orders`.`id`, `orders`.`count`, `services`.`name` FROM ((SELECT `service_id` AS `id`, count(*) AS `count` FROM `orders` WHERE `service_id` = ' . $service_id . '  AND `user_id` = ' . $user_id . '  GROUP BY `service_id`) UNION ( SELECT 0, count(*) FROM `orders` )) `orders` LEFT JOIN `services` ON orders.id = services.id ORDER BY `services`.`id`')->queryAll();
         // return $data[$service_id]['count'] . ' ' . $data[$service_id]['name'];
-        return $data[1]['count'] . ' ' . $data[1]['name'];
+        return '<span class="label-id"> '.  $data[1]['count'] . '</span>  ' . $data[1]['name'];
     }
 
     public static function getServicesTypesCount()
@@ -148,6 +148,16 @@ class Orders extends ActiveRecord
     //     ];
     // }
 
+    public static function getSearch_types()
+    {
+        return [
+            ['id' => GlobalsConst::SEARCH_ORDER_ID, 'type' => 'Order ID'],
+
+            ['id' => GlobalsConst::SEARCH_LINK, 'type' => 'Link'],
+
+            ['id' => GlobalsConst::SEARCH_USER, 'type' => 'Username'],
+        ];
+    }
 
     public function getMode()
     {
