@@ -4,16 +4,17 @@ use yii\helpers\Html;
 use yii\widgets\LinkPager;
 use yii\widgets\ActiveForm;
 use yii\i18n\Formatter;
+use yii\bootstrap\Dropdown;
 use yii\grid\GridView;
 use yii\helpers\ArrayHelper;
 use yii\data\ActiveDataProvider;
 use app\modules\orders\models;
 use yii\db\Query;
+use yii\helpers\Url;
 use app\modules\orders\models\Orders;
 use app\modules\orders\models\Services;
 
 $service_list = Orders::getServicesTypesCount();
-
 ?>
 <?= $this->render('_search', ['model' => $searchModel]) ?>
 
@@ -21,7 +22,6 @@ $service_list = Orders::getServicesTypesCount();
     <?=
     GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
         'summary' => '{begin} to {end} of {totalCount}',
         'layout' => "{items}\n<div class='row'><div class='col-sm-8'>{pager}</div><div class='col-sm-4 pagination-counters'>{summary}</div></div>",
         'columns' => [
@@ -30,30 +30,44 @@ $service_list = Orders::getServicesTypesCount();
             'link', 'quantity', [
                 'attribute' => 'service_type', 'format' => 'html',
                 'headerOptions' => ['class' => 'dropdown-th'],
-                // 'value' => function ($model) {
-                //     $service_list = $model::getList($model->user_id);
-                //     return  $service_list[$model->service_id]['count'].'  '. $service_list[$model->service_id]['name'];
-                //     // return $model->service_id;
-                // },
                 'value' => function ($model) {
                     return Orders::getUserServiceCount($model->user_id, $model->service_id);
                 },
-                'label' => 'Service',
-                'filter' => Html::activeDropDownList($searchModel, 'service_type', ArrayHelper::map(Orders::getServicesTypesCount(), 'id',  function ($model) {
-                    // return $elem['name'];
-                    return $model['count'] . ' ' . $model['name'];
-                }), [
-                    'prompt' => 'All',
-                    'class' => 'btn btn-th btn-default dropdown-toggle',
-                ]),
-                // 'filterInputOptions' => ['class' => 'dropdown-th', 'id' => null]
-                // 'label' => 'Service',  'filter' => Html::activeDropDownList($searchModel, 'service_type', ArrayHelper::map(Services::find()->asArray()->all(), 'id', 'name'), ['class' => 'btn btn-th btn-default dropdown-toggle', 'prompt' => 'All']),
+                'header' => '<div class="dropdown">
+                <button class="btn btn-th btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                  Service
+                  <span class="caret"></span>
+                </button>' . Dropdown::widget([
+                    'encodeLabels' => false,
+                    'items' => ArrayHelper::map(Orders::getServicesTypesCount(), 'id',  function ($model) {
+                        if ($model['name'] == '') {
+                            return ['label' => 'All' . ' (' . $model['count'] .  ')', 'url' => Url::current(['OrdersSearch[service_type]' => ''])];
+                        }
+                        return ['label' => '<span class="label-id">' . $model['count'] . '</span> ' . $model['name'], 'url' => Url::current(['OrdersSearch[service_type]' => $model['id']])];
+                    }),
+                    'submenuOptions' => [
+                        'aria-labelledby' => 'dropdownMenu1'
+                    ]
+                ]) . '</div></div>',
             ],
-            ['attribute' => 'status', 'format' => 'text', 'label' => 'Status',  'value' => function ($model) {
+            ['attribute' => 'status', 'format' => 'text', 'filter' => false, 'label' => 'Status',  'value' => function ($model) {
                 return $model->getStatus();
-            }], ['attribute' => 'mode', 'headerOptions' => ['class' => 'dropdown-th'], 'format' => 'html', 'label' => 'Mode', 'filterInputOptions' => ['class' => 'btn btn-th btn-default dropdown-toggle',  'prompt' => 'All'], 'filter' => ['0' => 'Manual', '1' => 'Auto'], 'value' => function ($model) {
-                return $model->getMode();
-            }],           [
+            }], [
+                'attribute' => 'mode', 'headerOptions' => ['class' => 'dropdown-th'], 'format' => 'html',
+                'header' => '<div class="dropdown">
+                <button class="btn btn-th btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                  Mode
+                  <span class="caret"></span>
+                </button>' . Dropdown::widget([
+                    'items' => [['label' => 'All', 'url' => Url::current(['OrdersSearch[mode]' => ''])], ['label' => 'Manual', 'url' => Url::current(['OrdersSearch[mode]' => '0'])], ['label' => 'Auto', 'url' => Url::current(['OrdersSearch[mode]' => '1'])]],
+                    'submenuOptions' => [
+                        'aria-labelledby' => 'dropdownMenu1'
+                    ]
+                ]) . '</div></div>',
+                'value' => function ($model) {
+                    return $model->getMode();
+                }
+            ],           [
                 'attribute' => 'created_at',
                 'format' => ['date', 'php:Y-m-d h:i:s'],
                 'label' => 'Created'

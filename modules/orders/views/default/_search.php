@@ -3,18 +3,21 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 use app\modules\orders\models\Orders;
 
 
 ?>
 <ul class="nav nav-tabs p-b">
 
-    <li><?= Html::a(GlobalsConst::STATUS_ALL_ORDERS, ['/?OrdersSearch[status]='],) ?></li>
-    <li><?= Html::a(GlobalsConst::STATUS_PENDING, ['/?OrdersSearch[status]=0'],) ?></li>
-    <li><?= Html::a(GlobalsConst::STATUS_IN_PROGRESS, ['/?OrdersSearch[status]=1'],) ?></li>
-    <li><?= Html::a(GlobalsConst::STATUS_COMPLETED, ['/?OrdersSearch[status]=2'],) ?></li>
-    <li><?= Html::a(GlobalsConst::STATUS_CANCELED, ['/?OrdersSearch[status]=3'],) ?></li>
-    <li><?= Html::a(GlobalsConst::STATUS_ERROR, ['/?OrdersSearch[status]=4'],) ?></li>
+    <?php foreach (Orders::getStatusType() as $item) {
+        if (strstr(Url::current(), 'OrdersSearch%5Bsearch_type%5D')) {
+            echo '<li><a href="' . Url::current(['index', 'OrdersSearch[status]' => ArrayHelper::getValue($item, "id")]) . '"> ' . ArrayHelper::getValue($item, "type") . '</a></li>';
+        } else {
+            echo '<li><a href="' . Url::to(['index', 'OrdersSearch[status]' => ArrayHelper::getValue($item, "id")]) . '"> ' . ArrayHelper::getValue($item, "type") . '</a></li>';
+        }
+    } ?>
+
     <li class="pull-right custom-search">
 
         <?php $form = ActiveForm::begin([

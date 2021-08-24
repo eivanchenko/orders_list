@@ -57,19 +57,15 @@ class Orders extends ActiveRecord
         // $data = Yii::$app->db->createCommand('SELECT `orders`.`id`, `orders`.`count`, `services`.`name` FROM ((SELECT `service_id` AS `id`, count(*) AS `count` FROM `orders` WHERE `user_id` = ' . $user_id . '  GROUP BY `service_id`) UNION ( SELECT 0, count(*) FROM `orders` )) `orders` LEFT JOIN `services` ON orders.id = services.id ORDER BY `services`.`id`')->queryAll();
         $data = Yii::$app->db->createCommand('SELECT `orders`.`id`, `orders`.`count`, `services`.`name` FROM ((SELECT `service_id` AS `id`, count(*) AS `count` FROM `orders` WHERE `service_id` = ' . $service_id . '  AND `user_id` = ' . $user_id . '  GROUP BY `service_id`) UNION ( SELECT 0, count(*) FROM `orders` )) `orders` LEFT JOIN `services` ON orders.id = services.id ORDER BY `services`.`id`')->queryAll();
         // return $data[$service_id]['count'] . ' ' . $data[$service_id]['name'];
-        return '<span class="label-id"> '.  $data[1]['count'] . '</span>  ' . $data[1]['name'];
+        return '<span class="label-id"> ' .  $data[1]['count'] . '</span>  ' . $data[1]['name'];
     }
 
     public static function getServicesTypesCount()
     {
         $data = Yii::$app->db->createCommand(
-            'SELECT `orders`.`id`, `orders`.`count`, `services`.`name` FROM ((SELECT `service_id` AS `id`, count(*) AS `count` FROM `orders` GROUP BY `service_id`) UNION ( SELECT 0, count(*) FROM `orders` )) `orders` LEFT JOIN `services` ON orders.id = services.id ORDER BY `services`.`id`'
+            'SELECT `orders`.`id`, `orders`.`count`, `services`.`name` FROM ((SELECT `service_id` AS `id`, count(*) AS `count` FROM `orders` GROUP BY `service_id`) UNION ( SELECT 0, count(*) FROM `orders` )) `orders` LEFT JOIN `services` ON orders.id = services.id ORDER BY `orders`.`count` DESC'
         )->queryAll();
-        if ($data[0]['name'] == '') {
-            $data[0]['name'] = 'All';
-        }
         return $data;
-        // return $data[$service_id]['count'] . ' ' . $data[$service_id]['name'];
     }
 
     public function getFull_name()
@@ -133,20 +129,18 @@ class Orders extends ActiveRecord
                 break;
         }
     }
-    // public static function getStatus()
-    // {
-    //     return [
-    //         GlobalsConst::STATUS_PENDING,
 
-    //         GlobalsConst::STATUS_IN_PROGRESS,
-
-    //         GlobalsConst::STATUS_COMPLETED,
-
-    //         GlobalsConst::STATUS_CANCELED,
-
-    //         GlobalsConst::STATUS_ERROR
-    //     ];
-    // }
+    public static function getStatusType()
+    {
+        return [
+            ['id' => '', 'type' => 'All orders'],
+            ['id' => '0', 'type' => GlobalsConst::STATUS_PENDING],
+            ['id' => '1', 'type' => GlobalsConst::STATUS_IN_PROGRESS],
+            ['id' => '2', 'type' => GlobalsConst::STATUS_COMPLETED],
+            ['id' => '3', 'type' => GlobalsConst::STATUS_CANCELED],
+            ['id' => '4', 'type' => GlobalsConst::STATUS_ERROR]
+        ];
+    }
 
     public static function getSearch_types()
     {

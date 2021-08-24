@@ -27,7 +27,7 @@ return [
         '@bower' => '/var/www/vendor/bower-asset',
         '@npm' => '/var/www/vendor/npm-asset',
     ],
-    'defaultRoute' => 'orders',
+    'defaultRoute' => 'orders/default/index',
     'basePath' => '/var/www/html',
     'bootstrap' => $bootstrap,
     'modules' => $modules,
@@ -100,6 +100,9 @@ return [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
+            'rules' => [
+                'orders' => 'orders/default/index'
+            ]
         ],
         'user' => [
             'identityClass' => 'app\models\User',

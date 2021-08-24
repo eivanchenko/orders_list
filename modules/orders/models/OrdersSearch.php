@@ -25,7 +25,7 @@ class OrdersSearch extends Orders
         return [
             [['user_id',], 'integer'],
             [['mode'], 'string'],
-            [['status', 'service_type', 'service_id', 'search_type', 'search_word'], 'safe']
+            [['status', 'service_type', 'service_id', 'search_type', 'search_word'], 'trim']
         ];
     }
 
@@ -74,22 +74,16 @@ class OrdersSearch extends Orders
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
-
-        if ($this->service_type == 0) {
-            $this->service_type = '';
-        }
-        $query->andFilterWhere(['=', 'services.id', $this->service_type]);
         $query->andFilterWhere(['=', 'orders.status', $this->status]);
+        $query->andFilterWhere(['=', 'services.id', $this->service_type]);
         $query->andFilterWhere(['=', 'orders.mode', $this->mode]);
 
         switch ($this->search_type) {
             case 1:
                 $query->andFilterWhere(['=', 'orders.id', $this->search_word]);
-                return $dataProvider;
                 break;
             case 2:
-                $query->andFilterWhere(['like', 'orders.link', $this->search_word]);
-                return $dataProvider;
+                $query->andWhere(['like', 'orders.link', $this->search_word]);
                 break;
             case 3:
                 $query->andWhere(
@@ -97,13 +91,8 @@ class OrdersSearch extends Orders
                         ' OR users.first_name LIKE "%' . $this->search_word . '%" ' .
                         'OR users.last_name LIKE "%' . $this->search_word . '%"'
                 );
-                return $dataProvider;
                 break;
         }
-
-        // $query->andFilterWhere(['=', 'orders.id', $this->id]);
-        // $query->andFilterWhere(['like', 'orders.link', $this->link]);
-
         return $dataProvider;
     }
 }
