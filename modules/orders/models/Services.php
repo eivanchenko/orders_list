@@ -10,7 +10,10 @@ class Services extends ActiveRecord
     {
         return 'services';
     }
-
+    
+    /**
+     * {@inheritdoc}
+     */
     public function rules()
     {
         return [

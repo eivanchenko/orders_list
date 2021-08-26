@@ -29,6 +29,7 @@ return [
     ],
     'defaultRoute' => 'orders/default/index',
     'basePath' => '/var/www/html',
+    'language' => 'ru',
     'bootstrap' => $bootstrap,
     'modules' => $modules,
     'vendorPath' => '/var/www/vendor',
@@ -42,9 +43,9 @@ return [
             ],
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => self::env('DB_DSN', 'mysql:host=db_1;dbname=order_gen'),
-            'username' => self::env('DB_USER', 'root'),
-            'password' => self::env('DB_PASSWORD', 'root'),
+            'dsn' => self::env('DB_DSN', 'mysql:host=' . GlobalsConst::DB_HOST . ';dbname=' . GlobalsConst::DB_NAME),
+            'username' => self::env('DB_USER', GlobalsConst::DB_USER),
+            'password' => self::env('DB_PASSWORD', GlobalsConst::DB_PASSWORD),
             'charset' => 'utf8',
             'tablePrefix' => '',
         ],
@@ -101,6 +102,7 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                '/' => 'orders/default/index',
                 'orders' => 'orders/default/index'
             ]
         ],
@@ -112,6 +114,14 @@ return [
         'formatter' => [
             'dateFormat' => 'yyyy-mm-dd hh:mm:ss',
 
+        ],
+        'i18n' => [
+            'translations' => [
+                'app*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@app/modules/orders/messages',
+                ],
+            ]
         ]
     ],
     'params' => [

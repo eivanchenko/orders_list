@@ -6,11 +6,17 @@ use yii\db\ActiveRecord;
 
 class Users extends ActiveRecord
 {
+    /**
+     * {@inheritdoc}
+     */
     public static function tableName()
     {
         return 'users';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function rules()
     {
         return [
@@ -18,7 +24,9 @@ class Users extends ActiveRecord
         ];
     }
 
-    
+    /**
+     * {@inheritdoc}
+     */
     public function attributeLabels()
     {
         return [

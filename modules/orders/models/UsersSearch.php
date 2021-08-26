@@ -13,6 +13,10 @@ class UsersSearch extends Users
 {
     public $full_name;
 
+
+    /**
+     * {@inheritdoc}
+     */
     public function rules()
     {
         return [

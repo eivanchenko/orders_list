@@ -13,7 +13,10 @@ class ServicesSearch extends Services
 
     public $service_count;
 
-
+    
+    /**
+     * {@inheritdoc}
+     */
     public function rules()
     {
         return [
@@ -23,6 +26,9 @@ class ServicesSearch extends Services
         ];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function scenarios()
     {
         return Model::scenarios();

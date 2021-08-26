@@ -5,18 +5,22 @@ namespace app\modules\orders\models;
 use Yii;
 use GlobalsConst;
 use yii\db\ActiveRecord;
-use yii\data\ActiveDataProvider;
 use yii\db\Query;
-use yii\helpers\ArrayHelper;
 
 class Orders extends ActiveRecord
 {
-
+    /**
+     * {@inheritdoc}
+     */
     public static function tableName()
     {
         return 'orders';
     }
 
+
+    /**
+     * {@inheritdoc}
+     */
     public function rules()
     {
         return [
@@ -38,7 +42,7 @@ class Orders extends ActiveRecord
         return $this->hasOne(Services::class, ['id' => 'service_id']);
     }
 
-    public function getService_type()
+    public function getService_Type()
     {
         return $this->services->name;
     }
@@ -52,132 +56,89 @@ class Orders extends ActiveRecord
         return $this->user_id;
     }
 
-    public  static  function getUserServiceCount($user_id = 0, $service_id = 0)
-    {
-        // $data = Yii::$app->db->createCommand('SELECT `orders`.`id`, `orders`.`count`, `services`.`name` FROM ((SELECT `service_id` AS `id`, count(*) AS `count` FROM `orders` WHERE `user_id` = ' . $user_id . '  GROUP BY `service_id`) UNION ( SELECT 0, count(*) FROM `orders` )) `orders` LEFT JOIN `services` ON orders.id = services.id ORDER BY `services`.`id`')->queryAll();
-        $data = Yii::$app->db->createCommand('SELECT `orders`.`id`, `orders`.`count`, `services`.`name` FROM ((SELECT `service_id` AS `id`, count(*) AS `count` FROM `orders` WHERE `service_id` = ' . $service_id . '  AND `user_id` = ' . $user_id . '  GROUP BY `service_id`) UNION ( SELECT 0, count(*) FROM `orders` )) `orders` LEFT JOIN `services` ON orders.id = services.id ORDER BY `services`.`id`')->queryAll();
-        // return $data[$service_id]['count'] . ' ' . $data[$service_id]['name'];
-        return '<span class="label-id"> ' .  $data[1]['count'] . '</span>  ' . $data[1]['name'];
-    }
-
-    public static function getServicesTypesCount()
-    {
-        $data = Yii::$app->db->createCommand(
-            'SELECT `orders`.`id`, `orders`.`count`, `services`.`name` FROM ((SELECT `service_id` AS `id`, count(*) AS `count` FROM `orders` GROUP BY `service_id`) UNION ( SELECT 0, count(*) FROM `orders` )) `orders` LEFT JOIN `services` ON orders.id = services.id ORDER BY `orders`.`count` DESC'
-        )->queryAll();
-        return $data;
-    }
-
-    public function getFull_name()
+    public function getFull_Name()
     {
         return $this->users->first_name . ' ' . $this->users->last_name;
     }
 
-    // public static function  getSrc_type()
-    // {
-    //     $unionQuery = (new Query())->select(['0, count(*)'])->from('orders');
-    //     $subQuery  = (new Query())->select('service_id as id, count(*) as count')->from('orders')->groupBy('service_id')->union($unionQuery);
-    //     $MainQuery = new Query();
-    //     $MainQuery->select('orders.id, orders.count, services.name')->from(['orders' => $subQuery])->join('LEFT JOIN', 'services', 'orders.id = services.id')->orderBy(['orders.count' => SORT_DESC])->all();
-    //     $dataProvider = new ActiveDataProvider([
-    //         'query' => $MainQuery,
-    //     ]);
-    //     return $dataProvider;
-    // }
-
-
-    // public static  function getList($user_id = 0)
-    // {
-    //     $unionQuery = (new Query())->select(['0, count(*)'])->from('orders');
-    //     $subQuery  = (new Query())->select('service_id as id, count(*) as count')->from('orders')->where(['user_id'=>$user_id])->groupBy('service_id')->union($unionQuery);
-    //     return ArrayHelper::toArray(
-    //         static::find()
-    //             ->select('orders.id, orders.count, services.name')->from(['orders' => $subQuery])
-    //             ->join('LEFT JOIN', 'services', 'orders.id = services.id')
-    //             ->orderBy(['orders.count' => SORT_DESC])
-    //             ->asArray()
-    //             ->all(),
-    //         [
-    //             'app\modules\orders\models\Orders' =>
-    //             [
-    //                 'id',
-    //                 'name',
-    //                 'count'
-    //             ]
-    //         ]
-    //     );
-    // }
-
-
-    public function getStatus()
+    public static function getServicesTypesCount()
     {
-        switch ($this->status) {
-            case  0:
-                return GlobalsConst::STATUS_PENDING;
-                break;
-            case 1:
-                return GlobalsConst::STATUS_IN_PROGRESS;
-                break;
-            case 2:
-                return GlobalsConst::STATUS_COMPLETED;
-                break;
-            case 3:
-                return GlobalsConst::STATUS_CANCELED;
-                break;
-            case 4:
-                return GlobalsConst::STATUS_ERROR;
-                break;
-        }
+        $unionQuery = (new Query())->select(['ROUND(0)', 'count(*)'])->from(['orders' => Orders::tableName()]);
+        $subQuery  = (new Query())->select(['service_id AS id', 'count(*) AS count'])->from(['orders' => Orders::tableName()])->groupBy('service_id')->union($unionQuery);
+        $query = (new Query())->select(['orders.id', 'orders.count', 'services.name'])->from(['orders' => $subQuery])->join('LEFT JOIN', 'services', 'orders.id = services.id')->orderBy(['orders.count' => SORT_DESC])->cache(180)->all();
+        return $query;
     }
 
     public static function getStatusType()
     {
         return [
-            ['id' => '', 'type' => 'All orders'],
-            ['id' => '0', 'type' => GlobalsConst::STATUS_PENDING],
-            ['id' => '1', 'type' => GlobalsConst::STATUS_IN_PROGRESS],
-            ['id' => '2', 'type' => GlobalsConst::STATUS_COMPLETED],
-            ['id' => '3', 'type' => GlobalsConst::STATUS_CANCELED],
-            ['id' => '4', 'type' => GlobalsConst::STATUS_ERROR]
+            ['id' => '0', 'type' => Yii::t('app', 'status.type.pending')],
+            ['id' => '1', 'type' => Yii::t('app', 'status.type.inProgress')],
+            ['id' => '2', 'type' => Yii::t('app', 'status.type.completed')],
+            ['id' => '3', 'type' => Yii::t('app', 'status.type.canceled')],
+            ['id' => '4', 'type' => Yii::t('app', 'status.type.error')],
         ];
     }
 
     public static function getSearch_types()
     {
         return [
-            ['id' => GlobalsConst::SEARCH_ORDER_ID, 'type' => 'Order ID'],
+            ['id' => GlobalsConst::SEARCH_ORDER_ID, 'type' =>  Yii::t('app', 'search.type.orderID')],
 
-            ['id' => GlobalsConst::SEARCH_LINK, 'type' => 'Link'],
+            ['id' => GlobalsConst::SEARCH_LINK, 'type' => Yii::t('app',  'search.type.link')],
 
-            ['id' => GlobalsConst::SEARCH_USER, 'type' => 'Username'],
+            ['id' => GlobalsConst::SEARCH_USER, 'type' => Yii::t('app',  'search.type.username')],
         ];
     }
 
-    public function getMode()
+    public static function getModeType()
     {
-        switch ($this->mode) {
-            case 0:
-                return GlobalsConst::MODE_MANUAL;
-                break;
-            case 1:
-                return GlobalsConst::MODE_AUTO;
-                break;
+        return [
+            ['id' => '0', 'type' => Yii::t('app', 'mode.manual')],
+            ['id' => '1', 'type' => Yii::t('app', 'mode.auto')]
+        ];
+    }
+
+    public static function getQueryParams(string $parameters)
+    {
+        if (array_key_exists('OrdersSearch', Yii::$app->request->queryParams) && array_key_exists($parameters, Yii::$app->request->queryParams['OrdersSearch'])) {
+            return Yii::$app->request->queryParams['OrdersSearch'][$parameters];
+        } else {
+            return null;
         }
     }
 
+    public static function getActiveClass(string $type, string $parameter)
+    {
+        $liActive = '<li class="active">';
+        $liNotActive = '<li>';
+        $testExpression = Orders::getQueryParams($type) == $parameter;
+
+        if ($type == 'status' && $parameter == 'all') {
+            return ($testExpression  ||  Orders::getQueryParams($type) == null) ? $liActive : $liNotActive;
+        } elseif ($type == 'status') {
+            return $testExpression ? $liActive : $liNotActive;
+        } else {
+            if ($parameter == 'all') {
+                return ($testExpression ||  Orders::getQueryParams($type) == null) ? 'active' : null;
+            } else {
+                return $testExpression ? 'active' : null;
+            }
+        }
+    }
 
     public function attributeLabels()
     {
         return [
             'id' => 'ID',
-            'full_name' => 'User',
-            'link' => 'Link',
-            'quantity' => 'Quantity',
-            'service_id' => 'Service',
-            'service_type' => 'Service Type',
-            'status' => 'Status',
-            'mode' => 'Mode',
-            'created_at' => 'Created',
+            'full_name' => Yii::t('app', 'label.user'),
+            'link' => Yii::t('app', 'label.link'),
+            'quantity' => Yii::t('app', 'label.quantity'),
+            'service_id' => Yii::t('app', 'label.service'),
+            'service_type' => Yii::t('app', 'label.serviceType'),
+            'status' => Yii::t('app', 'label.status'),
+            'mode' => Yii::t('app', 'label.mode'),
+            'created_at' => Yii::t('app', 'label.created'),
         ];
     }
     public static function find(): OrdersQuery

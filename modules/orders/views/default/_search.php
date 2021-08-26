@@ -1,27 +1,24 @@
 <?php
 
+// use Yii;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use app\modules\orders\models\Orders;
-
+use app\modules\orders\widgets\StatusLink;
 
 ?>
 <ul class="nav nav-tabs p-b">
 
-    <?php foreach (Orders::getStatusType() as $item) {
-        if (strstr(Url::current(), 'OrdersSearch%5Bsearch_type%5D')) {
-            echo '<li><a href="' . Url::current(['index', 'OrdersSearch[status]' => ArrayHelper::getValue($item, "id")]) . '"> ' . ArrayHelper::getValue($item, "type") . '</a></li>';
-        } else {
-            echo '<li><a href="' . Url::to(['index', 'OrdersSearch[status]' => ArrayHelper::getValue($item, "id")]) . '"> ' . ArrayHelper::getValue($item, "type") . '</a></li>';
-        }
-    } ?>
+
+    <?= StatusLink::widget() ?>
+
 
     <li class="pull-right custom-search">
 
         <?php $form = ActiveForm::begin([
-            'action' => ['index'],
+            'action' => Url::current([]),
             'method' => 'get',
             'options' => [
                 'class' => 'form-inline'
@@ -30,7 +27,7 @@ use app\modules\orders\models\Orders;
         <div class="input-group">
 
 
-            <?= $form->field($model, 'search_word')->textInput()->input('text', ['placeholder' => 'Search orders'])->label(false); ?>
+            <?= $form->field($model, 'search_word')->textInput()->input('text', ['placeholder' => Yii::t('app', 'search.placeholder')])->label(false); ?>
             <?= Html::beginTag('span', ['class' => 'input-group-btn search-select-wrap']) ?>
             <?= Html::activeDropDownList($model, 'search_type', ArrayHelper::map(Orders::getSearch_types(), 'id', 'type'), [
                 'class' => 'form-control search-select',

@@ -2,9 +2,7 @@
 
 namespace app\modules\orders\models;
 
-use Yii;
 use yii\base\Model;
-use yii\db\Query;
 use yii\data\ActiveDataProvider;
 use app\modules\orders\models\Orders;
 
@@ -19,7 +17,9 @@ class OrdersSearch extends Orders
     public $search_word;
 
 
-
+    /**
+     * {@inheritdoc}
+     */
     public function rules()
     {
         return [
@@ -29,7 +29,9 @@ class OrdersSearch extends Orders
         ];
     }
 
-
+    /**
+     * {@inheritdoc}
+     */
     public function scenarios()
     {
         return Model::scenarios();
@@ -39,19 +41,6 @@ class OrdersSearch extends Orders
     {
         $query = Orders::find();
         $query->joinWith(['users', 'services']);
-
-
-
-        // $unionQuery = (new Query())->select(['0, count(*)'])->from('orders');
-        // $subQuery  = (new Query())->select('service_id as id, count(*) as count')->from('orders')->where(['user_id'=>$this->user_id])->groupBy('service_id')->union($unionQuery);
-        // $MainQuery = new Query();
-        // $MainQuery->select('orders.id, orders.count, services.name')->from(['orders' => $subQuery])->join('LEFT JOIN', 'services', 'orders.id = services.id')->orderBy(['orders.count' => SORT_DESC])->all();
-        // $query->leftJoin(['serviceCount' => $MainQuery], 'serviceCount.id = orders.id');
-
-        // $unionQuery = ($query)->select(['0, count(*)'])->from('orders');
-        // $subQuery  = ($query)->select('service_id as id, count(*) as count')->from('orders')->groupBy('service_id')->union($unionQuery);
-        // $query->select('orders.id, orders.count, services.name')->from($subQuery)->orderBy(['orders.count' => SORT_DESC])->all();
-        // $query->leftJoin(['serviceCount' => $MainQuery], 'serviceCount.id = orders.id');
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
@@ -74,22 +63,31 @@ class OrdersSearch extends Orders
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
-        $query->andFilterWhere(['=', 'orders.status', $this->status]);
-        $query->andFilterWhere(['=', 'services.id', $this->service_type]);
-        $query->andFilterWhere(['=', 'orders.mode', $this->mode]);
+        if (Orders::getQueryParams('status') == 'all') {
+            $this->status = '';
+        }
+        if (Orders::getQueryParams('mode') == 'all') {
+            $this->mode = '';
+        }
+        if (Orders::getQueryParams('service_type') == 'all') {
+            $this->service_type = '';
+        }
+        $query->andFilterWhere(['orders.mode' => $this->mode, 'services.id' => $this->service_type, 'orders.status' => $this->status]);
 
         switch ($this->search_type) {
             case 1:
-                $query->andFilterWhere(['=', 'orders.id', $this->search_word]);
+                $query->andWhere(['=', 'orders.id', $this->search_word]);
                 break;
             case 2:
                 $query->andWhere(['like', 'orders.link', $this->search_word]);
                 break;
             case 3:
                 $query->andWhere(
-                    'CONCAT_WS(" ", users.first_name, users.last_name) LIKE  "%' . $this->search_word . '%" ' .
-                        ' OR users.first_name LIKE "%' . $this->search_word . '%" ' .
-                        'OR users.last_name LIKE "%' . $this->search_word . '%"'
+                    [
+                        'like',
+                        'CONCAT(users.first_name, " ", users.last_name)',
+                        $this->search_word
+                    ]
                 );
                 break;
         }
