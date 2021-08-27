@@ -50,7 +50,7 @@ return [
             'tablePrefix' => '',
         ],
         'errorHandler' => [
-            'errorAction' => 'site/error',
+            'errorAction' => 'orders/default/error',
         ],
         'log' => [
             'traceLevel' => self::env('YII_TRACELEVEL', 0),

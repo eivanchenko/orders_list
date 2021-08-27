@@ -4,10 +4,8 @@ namespace app\modules\orders\controllers;
 
 use Yii;
 use yii\web\Controller;
-use app\modules\orders\models\Orders;
-use yii\base\Model;
+use yii\web\Response;
 use app\modules\orders\models\OrdersSearch;
-use app\modules\orders\models\Services;
 
 class DefaultController extends Controller
 {
@@ -21,5 +19,10 @@ class DefaultController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+    }
+
+    public function actionError()
+    {
+        return $this->redirect(Yii::$app->homeUrl);
     }
 }

@@ -61,7 +61,7 @@ RUN apk add --no-cache \
     #
     # Set system timezone to make cron jobs run at correct local times
     && apk add --no-cache tzdata \
-    && cp /usr/share/zoneinfo/Europe/Berlin /etc/localtime \
+    && cp /usr/share/zoneinfo/Europe/Moscow /etc/localtime \
     && echo "Europe/Moscow" > /etc/timezone \
     && apk del --force-broken-world tzdata
 
