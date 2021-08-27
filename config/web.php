@@ -29,7 +29,7 @@ return [
     ],
     'defaultRoute' => 'orders/default/index',
     'basePath' => '/var/www/html',
-    'language' => 'ru',
+    'language' => 'en',
     'bootstrap' => $bootstrap,
     'modules' => $modules,
     'vendorPath' => '/var/www/vendor',

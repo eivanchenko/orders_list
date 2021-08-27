@@ -4,8 +4,6 @@ namespace app\modules\orders\controllers;
 
 use Yii;
 use yii\web\Controller;
-use yii\data\ActiveDataProvider;
-use yii\data\Pagination;
 use app\modules\orders\models\OrdersSearch;
 
 class DefaultController extends Controller

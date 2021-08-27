@@ -6,11 +6,14 @@ use yii\db\ActiveRecord;
 
 class Services extends ActiveRecord
 {
+    /**
+     * {@inheritdoc}
+     */
     public static function tableName()
     {
         return 'services';
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -22,6 +25,9 @@ class Services extends ActiveRecord
         ];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function attributeLabels()
     {
         return [

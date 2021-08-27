@@ -25,7 +25,7 @@ class ModeDropDown extends Widget
           <span class="caret"></span>
         </button>' . Dropdown::widget([
             'items' =>
-            [['label' => Yii::t('app', 'label.all'), 'url' => Url::current(['OrdersSearch[mode]' => '']), 'options' => ['class' => Orders::getActiveClass('mode', 'all')]], ['label' => Yii::t('app', 'mode.manual'), 'url' => Url::current(['OrdersSearch[mode]' => '0']), 'options' => ['class' => Orders::getActiveClass('mode', 0)]], ['label' => Yii::t('app', 'mode.auto'), 'url' => Url::current(['OrdersSearch[mode]' => '1']), 'options' => ['class' => Orders::getActiveClass('mode', 1)]]],
+            [['label' => Yii::t('app', 'label.all'), 'url' => Url::current(['mode' => 'all']), 'options' => ['class' => Orders::getActiveClass('mode', 'all')]], ['label' => Yii::t('app', 'mode.manual'), 'url' => Url::current(['mode' => '0']), 'options' => ['class' => Orders::getActiveClass('mode', 0)]], ['label' => Yii::t('app', 'mode.auto'), 'url' => Url::current(['mode' => '1']), 'options' => ['class' => Orders::getActiveClass('mode', 1)]]],
             'submenuOptions' => [
                 'aria-labelledby' => 'dropdownMenu1'
             ]

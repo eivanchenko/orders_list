@@ -3,11 +3,10 @@
 use yii\grid\GridView;
 use app\modules\orders\widgets\ServiceDropDown;
 use app\modules\orders\widgets\ModeDropDown;
+use app\modules\orders\models\Orders;
 ?>
 
-<!-- <?= $total = $dataProvider->totalCount; ?> -->
 <?= $this->render('_search', ['model' => $searchModel]) ?>
-
 <div class="container-fluid">
     <?=
     GridView::widget([

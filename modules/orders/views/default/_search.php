@@ -1,6 +1,5 @@
 <?php
 
-// use Yii;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
@@ -18,7 +17,7 @@ use app\modules\orders\widgets\StatusLink;
     <li class="pull-right custom-search">
 
         <?php $form = ActiveForm::begin([
-            'action' => Url::current([]),
+            'action' => Url::current(['index', 'service_type' => 'all', 'mode' => 'all']),
             'method' => 'get',
             'options' => [
                 'class' => 'form-inline'

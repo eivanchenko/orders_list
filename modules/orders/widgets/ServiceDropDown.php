@@ -28,9 +28,9 @@ class ServiceDropDown extends Widget
             'encodeLabels' => false,
             'items' => ArrayHelper::map(Orders::getServicesTypesCount(), 'id',  function ($model) {
                 if ($model['name'] == '') {
-                    return ['label' => Yii::t('app', 'label.all') . ' (' . $model['count'] .  ')', 'url' => Url::current(['OrdersSearch[service_type]' => '']), 'options' => ['class' => Orders::getActiveClass('service_type', 'all')]];
+                    return ['label' => Yii::t('app', 'label.all') . ' (' . $model['count'] .  ')', 'url' => Url::current(['service_type' => 'all']), 'options' => ['class' => Orders::getActiveClass('service_type', 'all')]];
                 }
-                return ['label' => '<span class="label-id">' . $model['id'] . '</span> ' . Yii::t('app', $model['name']) . ' (' . $model['count'] . ')', 'url' => Url::current(['OrdersSearch[service_type]' => $model['id']]), 'options' => ['class' => Orders::getActiveClass('service_type',  $model['id'])]];
+                return ['label' => '<span class="label-id">' . $model['id'] . '</span> ' . Yii::t('app', $model['name']) . ' (' . $model['count'] . ')', 'url' => Url::current(['service_type' => $model['id']]), 'options' => ['class' => Orders::getActiveClass('service_type',  $model['id'])]];
             }),
             'submenuOptions' => [
                 'aria-labelledby' => 'dropdownMenu1'

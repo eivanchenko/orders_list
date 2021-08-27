@@ -10,7 +10,6 @@ class OrdersSearch extends Orders
 {
     public $full_name;
     public $status;
-    public $searchstring;
     public $service_type;
     public $service_id;
     public $search_type;

@@ -26,9 +26,17 @@ class Orders extends ActiveRecord
         return [
             [['id', 'user_id', 'quantity', 'service_id', 'mode'], 'integer'],
             ['link', 'string'],
-            [['full_name', 'searchstring', 'status', 'service_type', 'service_id'], 'safe']
+            [['full_name', 'status', 'service_type', 'service_id'], 'safe']
 
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function formName()
+    {
+        return '';
     }
 
 
@@ -69,7 +77,10 @@ class Orders extends ActiveRecord
         return $query;
     }
 
-    public static function getStatusType()
+    /**
+     * @return array
+     */
+    public static function getStatusType(): array
     {
         return [
             ['id' => '0', 'type' => Yii::t('app', 'status.type.pending')],
@@ -80,7 +91,10 @@ class Orders extends ActiveRecord
         ];
     }
 
-    public static function getSearch_types()
+    /**
+     * @return array
+     */
+    public static function getSearch_types(): array
     {
         return [
             ['id' => GlobalsConst::SEARCH_ORDER_ID, 'type' =>  Yii::t('app', 'search.type.orderID')],
@@ -91,7 +105,10 @@ class Orders extends ActiveRecord
         ];
     }
 
-    public static function getModeType()
+    /**
+     * @return array
+     */
+    public static function getModeType(): array
     {
         return [
             ['id' => '0', 'type' => Yii::t('app', 'mode.manual')],
@@ -99,16 +116,22 @@ class Orders extends ActiveRecord
         ];
     }
 
-    public static function getQueryParams(string $parameters)
+    /**
+     * @return string|null
+     */
+    public static function getQueryParams(?string $parameters): ?string
     {
-        if (array_key_exists('OrdersSearch', Yii::$app->request->queryParams) && array_key_exists($parameters, Yii::$app->request->queryParams['OrdersSearch'])) {
-            return Yii::$app->request->queryParams['OrdersSearch'][$parameters];
+        if (Yii::$app->request->queryParams && array_key_exists($parameters, Yii::$app->request->queryParams)) {
+            return (string)Yii::$app->request->queryParams[$parameters];
         } else {
             return null;
         }
     }
 
-    public static function getActiveClass(string $type, string $parameter)
+    /**
+     * @return string|null
+     */
+    public static function getActiveClass(string $type, string $parameter): ?string
     {
         $liActive = '<li class="active">';
         $liNotActive = '<li>';
@@ -127,7 +150,10 @@ class Orders extends ActiveRecord
         }
     }
 
-    public function attributeLabels()
+    /**
+     * @return array
+     */
+    public function attributeLabels(): array
     {
         return [
             'id' => 'ID',
@@ -141,6 +167,7 @@ class Orders extends ActiveRecord
             'created_at' => Yii::t('app', 'label.created'),
         ];
     }
+
     public static function find(): OrdersQuery
     {
         return new OrdersQuery(get_called_class());

@@ -42,7 +42,6 @@ AppAsset::register($this);
             [
                 'label' => 'Orders', 'url' => ['/'],
                 'active' => true
-                // Yii::$app->controller->id=='DefaultController'
             ]
         ],
     ]);
