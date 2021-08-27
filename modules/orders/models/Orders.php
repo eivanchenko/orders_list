@@ -6,6 +6,7 @@ use Yii;
 use GlobalsConst;
 use yii\db\ActiveRecord;
 use yii\db\Query;
+use yii\helpers\ArrayHelper;
 
 class Orders extends ActiveRecord
 {
@@ -69,13 +70,65 @@ class Orders extends ActiveRecord
         return $this->users->first_name . ' ' . $this->users->last_name;
     }
 
-    public static function getServicesTypesCount()
+    /**
+     * @return array
+     */
+    public static function getServicesTypesCount(): array
     {
-        $unionQuery = (new Query())->select(['ROUND(0)', 'count(*)'])->from(['orders' => Orders::tableName()]);
-        $subQuery  = (new Query())->select(['service_id AS id', 'count(*) AS count'])->from(['orders' => Orders::tableName()])->groupBy('service_id')->union($unionQuery);
-        $query = (new Query())->select(['orders.id', 'orders.count', 'services.name'])->from(['orders' => $subQuery])->join('LEFT JOIN', 'services', 'orders.id = services.id')->orderBy(['orders.count' => SORT_DESC])->cache(180)->all();
-        return $query;
+        $mode = Orders::getQueryParams('mode');
+        $status = Orders::getQueryParams('status');
+        $service_type = Orders::getQueryParams('service_type');
+        $search_word =  Orders::getQueryParams('search_word');
+        $search_type = Orders::getQueryParams('search_type');
+
+        $subQuery  = (new Query())->select(['service_id AS id', 'count(*) AS count'])->from(['orders', 'users'])->andWhere('orders.user_id = users.id')->groupBy('service_id');
+        if (is_numeric($mode)) {
+            $subQuery->andWhere(['orders.mode' => $mode]);
+        }
+        if (is_numeric($status)) {
+            $subQuery->andWhere(['orders.status' => $status]);
+        }
+        if (is_numeric($search_type)) {
+            switch ($search_type) {
+                case 1:
+                    $subQuery->andWhere(['=', 'orders.id', $search_word]);
+                    break;
+                case 2:
+                    $subQuery->andWhere(['like', 'orders.link', $search_word]);
+                    break;
+                case 3:
+                    $subQuery->andWhere(
+                        [
+                            'like',
+                            'CONCAT(users.first_name, " ", users.last_name)',
+                            $search_word
+                        ]
+                    );
+                    break;
+            }
+        }
+        $mainQuery = (new Query())->select(['subQuery.id', 'subQuery.count', 'services.name'])->from(['subQuery' => $subQuery])->join('LEFT JOIN', 'services', 'subQuery.id = services.id')->orderBy(['subQuery.count' => SORT_DESC]);
+        if (is_numeric($service_type)) {
+            $mainQuery->andWhere(['services.id' => $service_type]);
+        }
+
+        $doneQuery = (new Query())->select(['services.id', 'services.name', 'main.count'])->from(['services'])->join('LEFT JOIN', ['main' => $mainQuery], 'main.id = services.id')->orderBy(['main.count' => SORT_DESC])->all();
+        $totalCount = array_reduce(
+            $doneQuery,
+            function ($total, $item) {
+                return $total += $item['count'];
+            }
+        );
+        $doneQuery = ArrayHelper::merge(
+            [
+                ['id' => '', 'name' => '', 'count' => $totalCount ?: '0'],
+            ],
+
+            $doneQuery
+        );
+        return empty($doneQuery) ? [] : $doneQuery;
     }
+
 
     /**
      * @return array

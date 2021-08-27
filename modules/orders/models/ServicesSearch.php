@@ -2,10 +2,7 @@
 
 namespace app\modules\orders\models;
 
-use Yii;
 use yii\base\Model;
-use yii\db\Query;
-use yii\data\ActiveDataProvider;
 use app\modules\orders\models\Services;
 
 class ServicesSearch extends Services

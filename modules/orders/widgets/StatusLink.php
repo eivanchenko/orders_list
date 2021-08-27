@@ -6,7 +6,6 @@ use Yii;
 use yii\base\Widget;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
-use yii\helpers\Html;
 use app\modules\orders\models\Orders;
 
 
