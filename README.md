@@ -15,3 +15,4 @@ docker-compose exec web chgrp www-data web/assets runtime var/sessions
 docker-compose exec web chmod g+rwx web/assets runtime var/sessions
 
 ```
+When done, you can access the new app from http://localhost:8080.
