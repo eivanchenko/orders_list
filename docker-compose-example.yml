@@ -23,7 +23,7 @@ services:
             # Enable periodic jobs (see config/crontabs)
             #ENABLE_CROND: 1
         ports:
-            - "8080:80"
+            - "${DOCKER_LOCAL_PORT}:80"
 
     db:
         image: mysql:latest
@@ -33,7 +33,7 @@ services:
             - ./build/etc/dump/test_db_structure.sql:/docker-entrypoint-initdb.d/a.sql
             - ./build/etc/dump/test_db_data.sql:/docker-entrypoint-initdb.d/b.sql
         environment:
-            MYSQL_ROOT_PASSWORD: root
-            MYSQL_DATABASE: order_gen
-            MYSQL_USER: web
-            MYSQL_PASSWORD: web
+            MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+            MYSQL_DATABASE: ${DB_NAME}
+            MYSQL_USER: ${DB_USER}
+            MYSQL_PASSWORD: ${DB_PASSWORD}

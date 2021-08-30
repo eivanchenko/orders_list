@@ -43,7 +43,7 @@ return [
             ],
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => self::env('DB_DSN'),
+            'dsn' => 'mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'],
             'username' => self::env('DB_USER'),
             'password' => self::env('DB_PASSWORD'),
             'charset' => 'utf8',
