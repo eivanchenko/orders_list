@@ -36,6 +36,10 @@ class OrdersSearch extends Orders
         return Model::scenarios();
     }
 
+    /**
+     * @param $params
+     * @return ActiveDataProvider
+     */
     public function search($params)
     {
         $query = Orders::find();

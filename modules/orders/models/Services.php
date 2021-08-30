@@ -36,6 +36,9 @@ class Services extends ActiveRecord
         ];
     }
 
+    /**
+     * @return ServicesQuery
+     */
     public static function find()
     {
         return new ServicesQuery(get_called_class());

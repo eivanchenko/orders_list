@@ -17,6 +17,10 @@ class StatusLink extends Widget
         parent::init();
     }
 
+    /**
+     * @return string|void
+     * @throws \Exception
+     */
     public function run()
     {
         if (is_numeric(Orders::getQueryParams('search_type'))) {

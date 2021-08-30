@@ -17,6 +17,10 @@ class ModeDropDown extends Widget
         parent::init();
     }
 
+    /**
+     * @return string
+     * @throws \Exception
+     */
     public function run()
     {
         return '<div class="dropdown">

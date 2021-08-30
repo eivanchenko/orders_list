@@ -7,12 +7,19 @@ use yii\db\ActiveQuery;
 class OrdersQuery extends ActiveQuery
 {
 
-
+    /**
+     * @param null $db
+     * @return array|\yii\db\ActiveRecord[]
+     */
     public function all($db = null)
     {
         return parent::all($db);
     }
 
+    /**
+     * @param null $db
+     * @return array|\yii\db\ActiveRecord|null
+     */
     public function one($db = null)
     {
 

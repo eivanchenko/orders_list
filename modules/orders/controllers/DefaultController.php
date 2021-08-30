@@ -9,7 +9,9 @@ use app\modules\orders\models\OrdersSearch;
 
 class DefaultController extends Controller
 {
-
+    /**
+     * @return string
+     */
     public function actionIndex()
     {
         $searchModel = new OrdersSearch();
@@ -21,6 +23,9 @@ class DefaultController extends Controller
         ]);
     }
 
+    /**
+     * @return Response
+     */
     public function actionError()
     {
         return $this->redirect(Yii::$app->homeUrl);

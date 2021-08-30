@@ -40,31 +40,49 @@ class Orders extends ActiveRecord
         return '';
     }
 
-
+    /**
+     * @return UsersQuery
+     */
     public function getUsers(): UsersQuery
     {
         return $this->hasOne(Users::class, ['id' => 'user_id']);
     }
 
+    /**
+     * @return ServicesQuery
+     */
     public function getServices(): ServicesQuery
     {
         return $this->hasOne(Services::class, ['id' => 'service_id']);
     }
 
+    /**
+     * @return mixed
+     */
     public function getService_Type()
     {
         return $this->services->name;
     }
+
+    /**
+     * @return mixed
+     */
     public function getService_id()
     {
         return $this->services->id;
     }
 
+    /**
+     * @return mixed|null
+     */
     public function getUser_id()
     {
         return $this->user_id;
     }
 
+    /**
+     * @return string
+     */
     public function getFull_Name()
     {
         return $this->users->first_name . ' ' . $this->users->last_name;
@@ -145,7 +163,7 @@ class Orders extends ActiveRecord
     }
 
     /**
-     * @return array
+     * @return array[]
      */
     public static function getSearch_types(): array
     {
@@ -170,6 +188,7 @@ class Orders extends ActiveRecord
     }
 
     /**
+     * @param string|null $parameters
      * @return string|null
      */
     public static function getQueryParams(?string $parameters): ?string
@@ -182,6 +201,8 @@ class Orders extends ActiveRecord
     }
 
     /**
+     * @param string $type
+     * @param string $parameter
      * @return string|null
      */
     public static function getActiveClass(string $type, string $parameter): ?string
@@ -221,6 +242,9 @@ class Orders extends ActiveRecord
         ];
     }
 
+    /**
+     * @return OrdersQuery
+     */
     public static function find(): OrdersQuery
     {
         return new OrdersQuery(get_called_class());

@@ -26,9 +26,14 @@ services:
             - "8080:80"
 
     db:
-        image: mysql:5
+        image: mysql:latest
+        command: mysqld --default-authentication-plugin=mysql_native_password
+        restart: always
+        volumes: 
+            - ./build/etc/dump/test_db_structure.sql:/docker-entrypoint-initdb.d/a.sql
+            - ./build/etc/dump/test_db_data.sql:/docker-entrypoint-initdb.d/b.sql
         environment:
             MYSQL_ROOT_PASSWORD: root
-            MYSQL_DATABASE: web
+            MYSQL_DATABASE: order_gen
             MYSQL_USER: web
             MYSQL_PASSWORD: web

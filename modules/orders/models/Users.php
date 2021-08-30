@@ -36,6 +36,9 @@ class Users extends ActiveRecord
         ];
     }
 
+    /**
+     * @return UsersQuery
+     */
     public static function find()
     {
         return new UsersQuery(get_called_class());
