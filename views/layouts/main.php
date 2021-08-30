@@ -40,7 +40,7 @@ AppAsset::register($this);
         ],
         'items' => [
             [
-                'label' => 'Orders', 'url' => ['/'],
+                'label' => 'Orders', 'url' => Yii::$app->homeUrl,
                 'active' => true
             ]
         ],

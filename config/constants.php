@@ -3,11 +3,6 @@
 class GlobalsConst
 {
 
-    // Config
-    const DB_NAME = 'order_gen';
-    const DB_HOST = 'db_1';
-    const DB_USER = 'root';
-    const DB_PASSWORD = 'root';
     // Modes types
     const MODE_MANUAL = 'Manual';
     const MODE_AUTO = 'Auto';

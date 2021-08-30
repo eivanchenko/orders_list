@@ -43,9 +43,9 @@ return [
             ],
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => self::env('DB_DSN', 'mysql:host=' . GlobalsConst::DB_HOST . ';dbname=' . GlobalsConst::DB_NAME),
-            'username' => self::env('DB_USER', GlobalsConst::DB_USER),
-            'password' => self::env('DB_PASSWORD', GlobalsConst::DB_PASSWORD),
+            'dsn' => self::env('DB_DSN'),
+            'username' => self::env('DB_USER'),
+            'password' => self::env('DB_PASSWORD'),
             'charset' => 'utf8',
             'tablePrefix' => '',
         ],
