@@ -11,7 +11,6 @@ class OrdersModule extends \yii\base\Module
     {
         parent::init();
 
-
-        // $this->layout = 'main';
+        $this->layout = 'main';
     }
 }

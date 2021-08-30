@@ -77,6 +77,8 @@ class OrdersSearch extends Orders
         }
         $query->andFilterWhere(['orders.mode' => $this->mode, 'services.id' => $this->service_type, 'orders.status' => $this->status]);
 
+        if ($this->search_word) {
+
         switch ($this->search_type) {
             case 1:
                 $query->andWhere(['=', 'orders.id', $this->search_word]);
@@ -93,7 +95,7 @@ class OrdersSearch extends Orders
                     ]
                 );
                 break;
-        }
+        }}
         return $dataProvider;
     }
 }

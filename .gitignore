@@ -2,6 +2,7 @@ config/local.php
 config/console-local.php
 config/php/local.ini
 /docker-compose.yml
+/var
 /vendor/
 .idea/
 .env

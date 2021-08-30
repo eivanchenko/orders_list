@@ -93,11 +93,6 @@ return [
             'cookieValidationKey' => self::env('COOKIE_VALIDATION_KEY', null, !YII_ENV_TEST),
             'trustedHosts' => explode(',', self::env('PROXY_HOST', '192.168.0.0/24')),
         ],
-        'session' => [
-            'name' => 'MYAPPSID',
-            'savePath' => '@app/var/sessions',
-            'timeout' => 1440,
-        ],
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
