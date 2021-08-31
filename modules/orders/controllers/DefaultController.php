@@ -5,6 +5,7 @@ namespace app\modules\orders\controllers;
 use Yii;
 use yii\web\Controller;
 use yii\web\Response;
+use yii\helpers\Url;
 use app\modules\orders\models\OrdersSearch;
 
 /**
@@ -32,6 +33,6 @@ class DefaultController extends Controller
      */
     public function actionError()
     {
-        return $this->redirect(Yii::$app->homeUrl);
+        return $this->redirect(Url::to(['index']));
     }
 }

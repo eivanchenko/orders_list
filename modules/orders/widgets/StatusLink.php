@@ -5,6 +5,7 @@ namespace app\modules\orders\widgets;
 use Yii;
 use yii\base\Widget;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
 use yii\helpers\Url;
 use app\modules\orders\models\Orders;
 
@@ -23,23 +24,47 @@ class StatusLink extends Widget
     }
 
     /**
-     * @return string|void
+     * @return string|null
      * @throws \Exception
      */
-    public function run()
+    public function run(): ?string
     {
+        $statusLinks = [];
+        $statusTypeAll = Yii::t('app', 'status.type.all');
+
         if (is_numeric(Orders::getQueryParams('searchType'))) {
-            echo Orders::getActiveClass('status', 'all') . '<a href="' . Url::current(['index', 'status' => 'all', 'serviceType' => 'all', 'mode' => 'all']) . '"> ' . Yii::t('app', 'status.type.all') . '</a></li>';
+            array_push(
+                $statusLinks,
+                Orders::getActiveClass('status', 'all') .
+                    Html::a($statusTypeAll, Url::current(['index', 'status' => 'all', 'serviceType' => 'all', 'mode' => 'all'])) .
+                    Html::endTag('li')
+            );
         } else {
-            echo Orders::getActiveClass('status', 'all') . '<a href="' . Url::to(['index']) . '"> ' . Yii::t('app', 'status.type.all') . '</a></li>';
+            array_push(
+                $statusLinks,
+                Orders::getActiveClass('status', 'all') .
+                    Html::a($statusTypeAll, Url::to(['index'])) .
+                    Html::endTag('li')
+            );
         }
 
         foreach (Orders::getStatusType() as $item) {
             if (is_numeric(Orders::getQueryParams('searchType'))) {
-                echo  Orders::getActiveClass('status', ArrayHelper::getValue($item, "id")) . '<a href="' . Url::current(['index', 'status' => ArrayHelper::getValue($item, "id"), 'serviceType' => 'all', 'mode' => 'all']) . '"> ' . ArrayHelper::getValue($item, "type") . '</a></li>';
+                array_push(
+                    $statusLinks,
+                    Orders::getActiveClass('status', ArrayHelper::getValue($item, "id")) .
+                        Html::a(ArrayHelper::getValue($item, "type"), Url::current(['index', 'status' => ArrayHelper::getValue($item, "id"), 'serviceType' => 'all', 'mode' => 'all'])) .
+                        Html::endTag('li')
+                );
             } else {
-                echo  Orders::getActiveClass('status', ArrayHelper::getValue($item, "id")) . '<a href="' . Url::to(['index', 'status' => ArrayHelper::getValue($item, "id")]) . '"> ' . ArrayHelper::getValue($item, "type") . '</a></li>';
+                array_push(
+                    $statusLinks,
+                    Orders::getActiveClass('status', ArrayHelper::getValue($item, "id")) .
+                        Html::a(ArrayHelper::getValue($item, "type"), Url::to(['index', 'status' => ArrayHelper::getValue($item, "id")])) .
+                        Html::endTag('li')
+                );
             }
         };
+        return $statusLinks ? implode('', $statusLinks) : null;
     }
 }

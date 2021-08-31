@@ -219,7 +219,7 @@ class Orders extends ActiveRecord
     /**
      * @param string $type
      * @param string $parameter
-     * @return string|null
+     * @return string|null  along with the opening tag li
      */
     public static function getActiveClass(string $type, string $parameter): ?string
     {

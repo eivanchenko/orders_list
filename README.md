@@ -15,4 +15,4 @@ docker-compose exec web chgrp www-data web/assets runtime
 docker-compose exec web chmod g+rwx web/assets runtime
 
 ```
-When done, you can access the new app from http://localhost:8080.
+When done, you can access the new app from http://localhost:8080/orders.

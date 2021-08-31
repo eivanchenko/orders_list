@@ -97,8 +97,7 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                '/' => 'orders/default/index',
-                'orders' => 'orders/default/index'
+                '/orders' => 'orders/default/index'
             ]
         ],
         'user' => [
