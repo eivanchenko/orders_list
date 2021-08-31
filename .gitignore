@@ -1,3 +1,4 @@
+.DS_Store
 config/local.php
 config/console-local.php
 config/php/local.ini
