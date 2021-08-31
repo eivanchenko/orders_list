@@ -9,6 +9,18 @@ use yii\db\Query;
 use yii\helpers\ArrayHelper;
 
 /**
+ * @property integer $id
+ * @property integer $userID
+ * @property integer $quantity
+ * @property integer $created_at
+ * @property integer $serviceID
+ * @property integer $status
+ * @property integer $mode
+ * @property string  $link
+ * @property string  $fullName
+ */
+
+/**
  * Class Orders
  * @package app\modules\orders\models
  */

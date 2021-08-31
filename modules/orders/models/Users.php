@@ -5,6 +5,13 @@ namespace app\modules\orders\models;
 use yii\db\ActiveRecord;
 
 /**
+ * @property integer $id
+ * @property string  $first_name
+ * @property string  $last_name
+ */
+
+
+/**
  * Class Users
  * @package app\modules\orders\models
  */
