@@ -29,7 +29,7 @@ class Orders extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return 'orders';
     }
@@ -38,7 +38,7 @@ class Orders extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['id', 'userID', 'quantity', 'serviceID', 'mode'], 'integer'],
@@ -51,7 +51,7 @@ class Orders extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function formName()
+    public function formName(): string
     {
         return '';
     }
@@ -99,7 +99,7 @@ class Orders extends ActiveRecord
     /**
      * @return string
      */
-    public function getFullName()
+    public function getFullName(): string
     {
         return $this->users->first_name . ' ' . $this->users->last_name;
     }

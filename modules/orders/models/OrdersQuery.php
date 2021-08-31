@@ -6,6 +6,7 @@ use yii\db\ActiveQuery;
 
 /**
  * Class OrdersQuery
+ * @see app\modules\orders\models\Orders
  * @package app\modules\orders\models
  */
 class OrdersQuery extends ActiveQuery

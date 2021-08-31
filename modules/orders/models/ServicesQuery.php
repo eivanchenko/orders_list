@@ -6,6 +6,7 @@ use yii\db\ActiveQuery;
 
 /**
  * Class ServicesQuery
+ * @see app\modules\orders\models\Services
  * @package app\modules\orders\models
  */
 class ServicesQuery extends ActiveQuery

@@ -6,6 +6,7 @@ use yii\db\ActiveQuery;
 
 /**
  * Class UsersQuery
+ * @see app\modules\orders\models\Users
  * @package app\modules\orders\models\
  */
 class UsersQuery extends ActiveQuery

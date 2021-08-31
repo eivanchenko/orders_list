@@ -23,7 +23,7 @@ class OrdersSearch extends Orders
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['userID',], 'integer'],
@@ -44,7 +44,7 @@ class OrdersSearch extends Orders
      * @param $params
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params): ActiveDataProvider
     {
         $query = Orders::find();
         $query->joinWith(['users', 'services']);

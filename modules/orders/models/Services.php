@@ -18,7 +18,7 @@ class Services extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return 'services';
     }
@@ -26,7 +26,7 @@ class Services extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['id',], 'integer'],
@@ -37,7 +37,7 @@ class Services extends ActiveRecord
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => 'ID',
@@ -48,7 +48,7 @@ class Services extends ActiveRecord
     /**
      * @return ServicesQuery
      */
-    public static function find()
+    public static function find(): ServicesQuery
     {
         return new ServicesQuery(get_called_class());
     }

@@ -21,6 +21,7 @@ class ServiceDropDown extends Widget
 
     /**
      * {@inheritDoc}
+     * @throws \Exception
      */
     public function init()
     {
