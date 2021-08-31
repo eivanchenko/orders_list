@@ -8,10 +8,15 @@ use yii\bootstrap\Dropdown;
 use yii\helpers\Url;
 use app\modules\orders\models\Orders;
 
-
+/**
+ * Class ModeDropDown
+ * @package app\modules\orders\widgets
+ */
 class ModeDropDown extends Widget
 {
-
+    /**
+     * {@inheritDoc}
+     */
     public function init()
     {
         parent::init();

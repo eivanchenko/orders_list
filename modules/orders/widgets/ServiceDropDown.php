@@ -9,9 +9,15 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use app\modules\orders\models\Orders;
 
+/**
+ * Class ServiceDropDown
+ * @package app\modules\orders\widgets
+ */
 class ServiceDropDown extends Widget
 {
-
+    /**
+     * {@inheritDoc}
+     */
     public function init()
     {
         parent::init();
@@ -32,9 +38,9 @@ class ServiceDropDown extends Widget
             'items' =>
             ArrayHelper::map(Orders::getServicesTypesCount(), 'id',  function ($model) {
                 if ($model['name'] == '') {
-                    return ['label' => Yii::t('app', 'label.all') . ' (' . $model['count'] .  ')', 'url' => Url::current(['service_type' => 'all']), 'options' => ['class' => Orders::getActiveClass('service_type', 'all')]];
+                    return ['label' => Yii::t('app', 'label.all') . ' (' . $model['count'] .  ')', 'url' => Url::current(['serviceType' => 'all']), 'options' => ['class' => Orders::getActiveClass('serviceType', 'all')]];
                 }
-                return ['label' => '<span class="label-id">' . $model['id'] . '</span> ' . Yii::t('app', $model['name']) . ' (' . ($model['count'] ?: "0")  . ')', 'url' => Url::current(['service_type' => $model['id']]), 'options' => ['class' => Orders::getActiveClass('service_type',  $model['id'])]];
+                return ['label' => '<span class="label-id">' . $model['id'] . '</span> ' . Yii::t('app', $model['name']) . ' (' . ($model['count'] ?: "0")  . ')', 'url' => Url::current(['serviceType' => $model['id']]), 'options' => ['class' => Orders::getActiveClass('serviceType',  $model['id'])]];
             }),
             'submenuOptions' => [
                 'aria-labelledby' => 'dropdownMenu1'

@@ -4,6 +4,10 @@ namespace app\modules\orders\models;
 
 use yii\db\ActiveQuery;
 
+/**
+ * Class UsersQuery
+ * @package app\modules\orders\models\
+ */
 class UsersQuery extends ActiveQuery
 {
 

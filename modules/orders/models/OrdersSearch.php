@@ -6,14 +6,18 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\modules\orders\models\Orders;
 
+/**
+ * Class OrdersSearch
+ * @package app\modules\orders\models
+ */
 class OrdersSearch extends Orders
 {
-    public $full_name;
+    public $fullName;
     public $status;
-    public $service_type;
-    public $service_id;
-    public $search_type;
-    public $search_word;
+    public $serviceType;
+    public $serviceID;
+    public $searchType;
+    public $searchWord;
 
 
     /**
@@ -22,9 +26,9 @@ class OrdersSearch extends Orders
     public function rules()
     {
         return [
-            [['user_id',], 'integer'],
+            [['userID',], 'integer'],
             [['mode'], 'string'],
-            [['status', 'service_type', 'service_id', 'search_type', 'search_word'], 'trim']
+            [['status', 'serviceType', 'serviceID', 'searchType', 'searchWord'], 'trim']
         ];
     }
 
@@ -54,7 +58,7 @@ class OrdersSearch extends Orders
         $dataProvider->setSort([
             'attributes' => [
                 'id',
-                'full_name' => [
+                'fullName' => [
                     'asc' => ['first_name' => SORT_ASC, 'last_name' => SORT_ASC],
                     'desc' => ['first_name' => SORT_DESC, 'last_name' => SORT_DESC],
                     'label' => 'Full Name',
@@ -72,26 +76,26 @@ class OrdersSearch extends Orders
         if (Orders::getQueryParams('mode') == 'all') {
             $this->mode = '';
         }
-        if (Orders::getQueryParams('service_type') == 'all') {
-            $this->service_type = '';
+        if (Orders::getQueryParams('serviceType') == 'all') {
+            $this->serviceType = '';
         }
-        $query->andFilterWhere(['orders.mode' => $this->mode, 'services.id' => $this->service_type, 'orders.status' => $this->status]);
+        $query->andFilterWhere(['orders.mode' => $this->mode, 'services.id' => $this->serviceType, 'orders.status' => $this->status]);
 
-        if ($this->search_word) {
+        if ($this->searchWord) {
 
-        switch ($this->search_type) {
+        switch ($this->searchType) {
             case 1:
-                $query->andWhere(['=', 'orders.id', $this->search_word]);
+                $query->andWhere(['=', 'orders.id', $this->searchWord]);
                 break;
             case 2:
-                $query->andWhere(['like', 'orders.link', $this->search_word]);
+                $query->andWhere(['like', 'orders.link', $this->searchWord]);
                 break;
             case 3:
                 $query->andWhere(
                     [
                         'like',
                         'CONCAT(users.first_name, " ", users.last_name)',
-                        $this->search_word
+                        $this->searchWord
                     ]
                 );
                 break;

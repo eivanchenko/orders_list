@@ -4,6 +4,10 @@ namespace app\modules\orders\models;
 
 use yii\db\ActiveRecord;
 
+/**
+ * Class Services
+ * @package app\modules\orders\models
+ */
 class Services extends ActiveRecord
 {
     /**

@@ -4,6 +4,9 @@ use yii\grid\GridView;
 use app\modules\orders\widgets\ServiceDropDown;
 use app\modules\orders\widgets\ModeDropDown;
 
+
+/** @var $searchModel app\modules\orders\models\OrdersSearch */
+/** @var $dataProvider  yii\data\ActiveDataProvider */
 ?>
 
 <?= $this->render('_search', ['model' => $searchModel]) ?>
@@ -16,12 +19,12 @@ use app\modules\orders\widgets\ModeDropDown;
         'layout' => "{items}\n<div class='row'><div class='col-sm-8'>{pager}</div><div class='col-sm-4 pagination-counters'>{summary}</div></div>",
         'columns' => [
             'id',
-            'full_name:html',
+            'fullName:html',
             'link', 'quantity', [
-                'attribute' => 'service_type', 'format' => 'html',
+                'attribute' => 'serviceType', 'format' => 'html',
                 'headerOptions' => ['class' => 'dropdown-th'],
                 'value' => function ($model) {
-                    return '<span class="label-id"> ' .  $model->service_id . '</span>  ' .  Yii::t('app', $model->service_type);
+                    return '<span class="label-id"> ' .  $model->serviceID . '</span>  ' .  Yii::t('app', $model->serviceType);
                 },
                 'header' =>  ServiceDropDown::widget(),
             ],

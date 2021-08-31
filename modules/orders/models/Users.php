@@ -4,6 +4,10 @@ namespace app\modules\orders\models;
 
 use yii\db\ActiveRecord;
 
+/**
+ * Class Users
+ * @package app\modules\orders\models
+ */
 class Users extends ActiveRecord
 {
     /**

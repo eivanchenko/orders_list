@@ -8,6 +8,10 @@ use yii\db\ActiveRecord;
 use yii\db\Query;
 use yii\helpers\ArrayHelper;
 
+/**
+ * Class Orders
+ * @package app\modules\orders\models
+ */
 class Orders extends ActiveRecord
 {
     /**
@@ -25,9 +29,9 @@ class Orders extends ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'user_id', 'quantity', 'service_id', 'mode'], 'integer'],
+            [['id', 'userID', 'quantity', 'serviceID', 'mode'], 'integer'],
             ['link', 'string'],
-            [['full_name', 'status', 'service_type', 'service_id'], 'safe']
+            [['fullName', 'status', 'serviceType', 'serviceID'], 'safe']
 
         ];
     }
@@ -59,7 +63,7 @@ class Orders extends ActiveRecord
     /**
      * @return mixed
      */
-    public function getService_Type()
+    public function getServiceType()
     {
         return $this->services->name;
     }
@@ -67,7 +71,7 @@ class Orders extends ActiveRecord
     /**
      * @return mixed
      */
-    public function getService_id()
+    public function getServiceID()
     {
         return $this->services->id;
     }
@@ -75,7 +79,7 @@ class Orders extends ActiveRecord
     /**
      * @return mixed|null
      */
-    public function getUser_id()
+    public function getUserID()
     {
         return $this->user_id;
     }
@@ -83,7 +87,7 @@ class Orders extends ActiveRecord
     /**
      * @return string
      */
-    public function getFull_Name()
+    public function getFullName()
     {
         return $this->users->first_name . ' ' . $this->users->last_name;
     }
@@ -95,9 +99,9 @@ class Orders extends ActiveRecord
     {
         $mode = Orders::getQueryParams('mode');
         $status = Orders::getQueryParams('status');
-        $service_type = Orders::getQueryParams('service_type');
-        $search_word =  Orders::getQueryParams('search_word');
-        $search_type = Orders::getQueryParams('search_type');
+        $serviceType = Orders::getQueryParams('serviceType');
+        $searchWord =  Orders::getQueryParams('searchWord');
+        $searchType = Orders::getQueryParams('searchType');
 
         $subQuery  = (new Query())->select(['service_id AS id', 'count(*) AS count'])->from(['orders', 'users'])->andWhere('orders.user_id = users.id')->groupBy('service_id');
         if (is_numeric($mode)) {
@@ -106,28 +110,28 @@ class Orders extends ActiveRecord
         if (is_numeric($status)) {
             $subQuery->andWhere(['orders.status' => $status]);
         }
-        if (is_numeric($search_type)) {
-            switch ($search_type) {
+        if (is_numeric($searchType)) {
+            switch ($searchType) {
                 case 1:
-                    $subQuery->andWhere(['=', 'orders.id', $search_word]);
+                    $subQuery->andWhere(['=', 'orders.id', $searchWord]);
                     break;
                 case 2:
-                    $subQuery->andWhere(['like', 'orders.link', $search_word]);
+                    $subQuery->andWhere(['like', 'orders.link', $searchWord]);
                     break;
                 case 3:
                     $subQuery->andWhere(
                         [
                             'like',
                             'CONCAT(users.first_name, " ", users.last_name)',
-                            $search_word
+                            $searchWord
                         ]
                     );
                     break;
             }
         }
         $mainQuery = (new Query())->select(['subQuery.id', 'subQuery.count', 'services.name'])->from(['subQuery' => $subQuery])->join('LEFT JOIN', 'services', 'subQuery.id = services.id')->orderBy(['subQuery.count' => SORT_DESC]);
-        if (is_numeric($service_type)) {
-            $mainQuery->andWhere(['services.id' => $service_type]);
+        if (is_numeric($serviceType)) {
+            $mainQuery->andWhere(['services.id' => $serviceType]);
         }
 
         $doneQuery = (new Query())->select(['services.id', 'services.name', 'main.count'])->from(['services'])->join('LEFT JOIN', ['main' => $mainQuery], 'main.id = services.id')->orderBy(['main.count' => SORT_DESC])->all();
@@ -165,7 +169,7 @@ class Orders extends ActiveRecord
     /**
      * @return array[]
      */
-    public static function getSearch_types(): array
+    public static function getSearchTypes(): array
     {
         return [
             ['id' => GlobalsConst::SEARCH_ORDER_ID, 'type' =>  Yii::t('app', 'search.type.orderID')],
@@ -231,11 +235,11 @@ class Orders extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'full_name' => Yii::t('app', 'label.user'),
+            'fullName' => Yii::t('app', 'label.user'),
             'link' => Yii::t('app', 'label.link'),
             'quantity' => Yii::t('app', 'label.quantity'),
-            'service_id' => Yii::t('app', 'label.service'),
-            'service_type' => Yii::t('app', 'label.serviceType'),
+            'serviceID' => Yii::t('app', 'label.service'),
+            'serviceType' => Yii::t('app', 'label.serviceType'),
             'status' => Yii::t('app', 'label.status'),
             'mode' => Yii::t('app', 'label.mode'),
             'created_at' => Yii::t('app', 'label.created'),

@@ -7,6 +7,10 @@ use yii\web\Controller;
 use yii\web\Response;
 use app\modules\orders\models\OrdersSearch;
 
+/**
+ * Class DefaultController
+ * @package app\modules\orders\controllers
+ */
 class DefaultController extends Controller
 {
     /**

@@ -2,9 +2,13 @@
 
 namespace app\modules\orders\models;
 
+/**
+ * Class UsersSearch
+ * @package app\modules\orders\models
+ */
 class UsersSearch extends Users
 {
-    public $full_name;
+    public $fullName;
 
 
     /**
@@ -14,7 +18,7 @@ class UsersSearch extends Users
     {
         return [
             [['id', 'first_name', 'last_name'], 'safe'],
-            [['full_name'], 'safe']
+            [['fullName'], 'safe']
         ];
     }
 }

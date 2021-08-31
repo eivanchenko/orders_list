@@ -4,6 +4,10 @@ namespace app\modules\orders\models;
 
 use yii\db\ActiveQuery;
 
+/**
+ * Class ServicesQuery
+ * @package app\modules\orders\models
+ */
 class ServicesQuery extends ActiveQuery
 {
 
