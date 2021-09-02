@@ -8,6 +8,9 @@ namespace app\modules\orders;
  */
 class OrdersModule extends \yii\base\Module
 {
+    /**
+     * @inheritdoc
+     */
     public $controllerNamespace = 'app\modules\orders\controllers';
 
     /**

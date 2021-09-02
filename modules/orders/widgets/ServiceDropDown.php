@@ -2,12 +2,13 @@
 
 namespace app\modules\orders\widgets;
 
+use app\modules\orders\components\OrdersHelpers;
+use app\modules\orders\models\search\OrdersSearch;
 use Yii;
 use yii\base\Widget;
 use yii\bootstrap\Dropdown;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
-use app\modules\orders\models\Orders;
 
 /**
  * Class ServiceDropDown
@@ -30,18 +31,18 @@ class ServiceDropDown extends Widget
         $this->dropDown = Dropdown::widget([
             'encodeLabels' => false,
             'items' =>
-            ArrayHelper::map(Orders::getServicesTypesCount(), 'id',  function ($model) {
+            ArrayHelper::map(OrdersSearch::getServicesTypesCount(), 'id',  function ($model) {
                 if ($model['name'] == '') {
                     return [
                         'label' => Yii::t('app', 'label.all') . ' (' . $model['count'] .  ')',
                         'url' => Url::current(['serviceType' => 'all']),
-                        'options' => ['class' => Orders::getActiveClass('serviceType', 'all')]
+                        'options' => ['class' => OrdersHelpers::getActiveClass('serviceType', 'all')]
                     ];
                 }
                 return [
                     'label' => '<span class="label-id">' . $model['id'] . '</span> ' . Yii::t('app', $model['name']) . ' (' . ($model['count'] ?: "0")  . ')',
                     'url' => Url::current(['serviceType' => $model['id']]),
-                    'options' => ['class' => Orders::getActiveClass('serviceType',  $model['id'])]
+                    'options' => ['class' => OrdersHelpers::getActiveClass('serviceType',  $model['id'])]
                 ];
             }),
             'submenuOptions' => [
@@ -53,7 +54,7 @@ class ServiceDropDown extends Widget
     /**
      * {@inheritDoc}
      */
-    public function run()
+    public function run(): string
     {
         return $this->render('serviceDDView', ['dropDown' => $this->dropDown, 'dropDownLabel' => $this->dropDownLabel]);
     }

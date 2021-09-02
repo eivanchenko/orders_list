@@ -1,15 +1,15 @@
 <?php
 
-namespace app\modules\orders\models;
+namespace app\modules\orders\models\query;
 
 use yii\db\ActiveQuery;
 
 /**
- * Class ServicesQuery
- * @see app\modules\orders\models\Services
- * @package app\modules\orders\models
+ * Class UsersQuery
+ * @see app\modules\orders\models\Users
+ * @package app\modules\orders\models\
  */
-class ServicesQuery extends ActiveQuery
+class UsersQuery extends ActiveQuery
 {
 
     /**

@@ -2,6 +2,7 @@
 
 namespace app\modules\orders\widgets;
 
+use app\modules\orders\components\OrdersHelpers;
 use Yii;
 use yii\base\Widget;
 use yii\helpers\ArrayHelper;
@@ -24,6 +25,7 @@ class StatusLink extends Widget
     }
 
     /**
+     * {@inheritDoc}
      * @return string|null
      * @throws \Exception
      */
@@ -32,34 +34,34 @@ class StatusLink extends Widget
         $statusLinks = [];
         $statusTypeAll = Yii::t('app', 'status.type.all');
 
-        if (is_numeric(Orders::getQueryParams('searchType'))) {
+        if (is_numeric(Yii::$app->request->getQueryParam('searchType'))) {
             array_push(
                 $statusLinks,
-                Orders::getActiveClass('status', 'all') .
+                OrdersHelpers::getActiveClass('status', 'all') .
                     Html::a($statusTypeAll, Url::current(['index', 'status' => 'all', 'serviceType' => 'all', 'mode' => 'all'])) .
                     Html::endTag('li')
             );
         } else {
             array_push(
                 $statusLinks,
-                Orders::getActiveClass('status', 'all') .
+                OrdersHelpers::getActiveClass('status', 'all') .
                     Html::a($statusTypeAll, Url::to(['index'])) .
                     Html::endTag('li')
             );
         }
 
         foreach (Orders::getStatusType() as $item) {
-            if (is_numeric(Orders::getQueryParams('searchType'))) {
+            if (is_numeric(Yii::$app->request->getQueryParam('searchType'))) {
                 array_push(
                     $statusLinks,
-                    Orders::getActiveClass('status', ArrayHelper::getValue($item, "id")) .
+                    OrdersHelpers::getActiveClass('status', ArrayHelper::getValue($item, "id")) .
                         Html::a(ArrayHelper::getValue($item, "type"), Url::current(['index', 'status' => ArrayHelper::getValue($item, "id"), 'serviceType' => 'all', 'mode' => 'all'])) .
                         Html::endTag('li')
                 );
             } else {
                 array_push(
                     $statusLinks,
-                    Orders::getActiveClass('status', ArrayHelper::getValue($item, "id")) .
+                    OrdersHelpers::getActiveClass('status', ArrayHelper::getValue($item, "id")) .
                         Html::a(ArrayHelper::getValue($item, "type"), Url::to(['index', 'status' => ArrayHelper::getValue($item, "id")])) .
                         Html::endTag('li')
                 );

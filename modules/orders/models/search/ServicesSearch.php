@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\orders\models;
+namespace app\modules\orders\models\search;
 
 use yii\base\Model;
 use app\modules\orders\models\Services;
@@ -14,7 +14,7 @@ class ServicesSearch extends Services
 
     public $service_count;
 
-    
+
     /**
      * {@inheritdoc}
      */
@@ -30,7 +30,7 @@ class ServicesSearch extends Services
     /**
      * {@inheritdoc}
      */
-    public function scenarios()
+    public function scenarios(): array
     {
         return Model::scenarios();
     }

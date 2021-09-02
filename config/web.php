@@ -23,11 +23,12 @@ if (YII_ENV_DEV) {
 
 return [
     'id' => 'basic',
+    'name' =>  $_ENV['COMPOSE_PROJECT_NAME'],
     'aliases' => [
         '@bower' => '/var/www/vendor/bower-asset',
         '@npm' => '/var/www/vendor/npm-asset',
     ],
-    'defaultRoute' => 'orders/default/index',
+    'defaultRoute' => 'orders/orders/index',
     'basePath' => '/var/www/html',
     'language' => 'en',
     'bootstrap' => $bootstrap,
@@ -43,14 +44,14 @@ return [
             ],
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'],
+            'dsn' => 'mysql:host=' . $_ENV['DOCKER_CONTAINER_NAME_DB'] . ';dbname=' . $_ENV['DB_NAME'],
             'username' => self::env('DB_USER'),
             'password' => self::env('DB_PASSWORD'),
             'charset' => 'utf8',
             'tablePrefix' => '',
         ],
         'errorHandler' => [
-            'errorAction' => 'orders/default/error',
+            'errorAction' => 'orders/orders/error'
         ],
         'log' => [
             'traceLevel' => self::env('YII_TRACELEVEL', 0),
@@ -78,17 +79,6 @@ return [
                 ],
             ],
         ],
-        'mailer' => [
-            'class' => 'yii\swiftmailer\Mailer',
-            'transport' => [
-                'class' => 'Swift_SmtpTransport',
-                'host' => self::env('SMTP_HOST'),
-                'username' => self::env('SMTP_USER'),
-                'password' => self::env('SMTP_PASSWORD'),
-                'port' => self::env('SMTP_PORT', 25),
-                'encryption' => self::env('SMTP_ENCRYPTION', null),
-            ],
-        ],
         'request' => [
             'cookieValidationKey' => self::env('COOKIE_VALIDATION_KEY', null, !YII_ENV_TEST),
             'trustedHosts' => explode(',', self::env('PROXY_HOST', '192.168.0.0/24')),
@@ -97,13 +87,8 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                '/orders' => 'orders/default/index'
+                '/orders' => 'orders/orders/index'
             ]
-        ],
-        'user' => [
-            'identityClass' => 'app\models\User',
-            'enableAutoLogin' => true,
-            'loginUrl' => ['user/login'],
         ],
         'formatter' => [
             'dateFormat' => 'yyyy-mm-dd hh:mm:ss',
@@ -118,11 +103,5 @@ return [
             ]
         ]
     ],
-    'params' => [
-        'mail.from' => ['no-reply@example.com' => 'My Application'],
-        'mail.catchAll' => self::env('MAIL_CATCHALL', null),
-
-        'user.passwordResetTokenExpire' => 3600,
-        'user.emailConfirmationTokenExpire' => 43200, // 5 days
-    ],
+    'params' => [],
 ];

@@ -3,6 +3,7 @@
 namespace app\modules\orders\models;
 
 use yii\db\ActiveRecord;
+use app\modules\orders\models\query\ServicesQuery;
 
 /**
  * @property integer $id

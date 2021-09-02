@@ -4,21 +4,21 @@ namespace app\modules\orders\controllers;
 
 use Yii;
 use yii\web\Controller;
-use yii\web\Response;
-use yii\helpers\Url;
-use app\modules\orders\models\OrdersSearch;
+use app\modules\orders\models\search\OrdersSearch;
 
 /**
- * Class DefaultController
+ * Class OrdersController
  * @package app\modules\orders\controllers
  */
-class DefaultController extends Controller
+class OrdersController extends Controller
 {
+
     /**
      * @return string
      */
-    public function actionIndex()
+    public function actionIndex(): string
     {
+        $this->view->title = $_ENV['COMPOSE_PROJECT_NAME'];
         $searchModel = new OrdersSearch();
 
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -29,10 +29,14 @@ class DefaultController extends Controller
     }
 
     /**
-     * @return Response
+     * @return array
      */
-    public function actionError()
+    public function actions(): array
     {
-        return $this->redirect(Url::to(['index']));
+        return [
+            'error' => [
+                'class' => 'yii\web\ErrorAction',
+            ]
+        ];
     }
 }

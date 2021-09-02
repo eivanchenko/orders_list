@@ -2,6 +2,7 @@
 
 namespace app\modules\orders\models;
 
+use app\modules\orders\models\query\UsersQuery;
 use yii\db\ActiveRecord;
 
 /**

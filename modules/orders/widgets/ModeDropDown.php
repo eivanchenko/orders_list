@@ -2,11 +2,11 @@
 
 namespace app\modules\orders\widgets;
 
+use app\modules\orders\components\OrdersHelpers;
 use Yii;
 use yii\base\Widget;
 use yii\bootstrap\Dropdown;
 use yii\helpers\Url;
-use app\modules\orders\models\Orders;
 
 /**
  * Class ModeDropDown
@@ -20,6 +20,7 @@ class ModeDropDown extends Widget
 
     /**
      * {@inheritDoc}
+     * @throws \Exception
      */
     public function init()
     {
@@ -30,18 +31,17 @@ class ModeDropDown extends Widget
             [
                 [
                     'label' => Yii::t('app', 'label.all'), 'url' => Url::current(['mode' => 'all']),
-                    'options' => ['class' => Orders::getActiveClass('mode', 'all')]
+                    'options' => ['class' => OrdersHelpers::getActiveClass('mode', 'all')]
                 ],
                 [
                     'label' => Yii::t('app', 'mode.manual'), 'url' => Url::current(['mode' => '0']),
-                    'options' => ['class' => Orders::getActiveClass('mode', 0)]
+                    'options' => ['class' => OrdersHelpers::getActiveClass('mode', 0)]
                 ],
                 [
                     'label' => Yii::t('app', 'mode.auto'), 'url' => Url::current(['mode' => '1']),
-                    'options' => ['class' => Orders::getActiveClass('mode', 1)]
+                    'options' => ['class' => OrdersHelpers::getActiveClass('mode', 1)]
                 ]
             ],
-
             'submenuOptions' => [
                 'aria-labelledby' => 'dropdownMenu1'
             ]
@@ -51,7 +51,7 @@ class ModeDropDown extends Widget
     /**
      * {@inheritDoc}
      */
-    public function run()
+    public function run(): string
     {
         return $this->render('modeDDView', ['dropDown' => $this->dropDown, 'dropDownLabel' => $this->dropDownLabel]);
     }

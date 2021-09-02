@@ -1,6 +1,8 @@
 <?php
 
-namespace app\modules\orders\models;
+namespace app\modules\orders\models\search;
+
+use app\modules\orders\models\Users;
 
 /**
  * Class UsersSearch
@@ -14,7 +16,7 @@ class UsersSearch extends Users
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['id', 'first_name', 'last_name'], 'safe'],

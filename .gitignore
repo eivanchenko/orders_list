@@ -4,7 +4,7 @@ config/console-local.php
 config/php/local.ini
 /docker-compose.yml
 /var
-/vendor/
+vendor/
 .idea/
 .env
 *.bak
