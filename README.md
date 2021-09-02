@@ -1,11 +1,11 @@
 OrderList Project
 ================
-How use:
+## Get project:
 ```
 git clone https://github.com/eivanchenko/orders_list.git ordersApp
 rm -rf ordersApp/.git
 ```
-# Init Composer packages
+## Init Composer packages
 ```
 cd ordersApp/build
 ```
@@ -19,7 +19,7 @@ docker-compose run --rm composer update
 ```
 This will update composer.json and composer.lock respectively. You can also run other composer commands, of course.
 
-# Build the Base Image
+## Build the Base Image
 ```
 # In the ./build directory run:
 
@@ -29,7 +29,7 @@ Then you can build the base image:
 ```
 docker-compose build
 ```
-# Initial Setup
+## Initial Setup
 ```
 cd ordersApp
 cp docker-compose-example.yml docker-compose.yml
@@ -38,8 +38,9 @@ docker-compose up -d
 ```
 Wait some seconds to let the DB container fire up ... and run:
 
-# Adds the vendor folder
+
 ```
+# Adds the vendor folder
 docker-compose exec web cp -rf /var/www/vendor ./
 
 docker-compose exec web chgrp www-data web/assets runtime 
