@@ -2,8 +2,10 @@
 
 use yii\helpers\Html;
 
-/** @var string $message */
-/** @var string $name */
+/**
+ * @var  $this yii\web\View
+ * @var  $message string  
+ * @var  $name string  */
 
 $this->title = $name;
 

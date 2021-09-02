@@ -12,7 +12,6 @@ use app\modules\orders\models\Orders;
 
 /**
  * Class SearchForm
- *
  * @package app\modules\orders\widgets
  */
 class SearchForm extends Widget
@@ -34,7 +33,7 @@ class SearchForm extends Widget
         parent::init();
         $this->activeForm = ActiveForm::class;
         $this->paramsForm = [
-            'action' => Url::current(['index', 'serviceType' => 'all', 'mode' => 'all']),
+            'action' => Url::current(['index', 'serviceType' => 'all', 'mode' => 'all', 'searchWord' => null, 'searchType' => null]),
             'method' => 'get',
             'options' => [
                 'class' => 'form-inline'

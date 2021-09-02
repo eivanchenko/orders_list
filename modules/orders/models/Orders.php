@@ -5,24 +5,24 @@ namespace app\modules\orders\models;
 use Yii;
 use yii\db\ActiveRecord;
 use app\modules\orders\models\query\OrdersQuery;
-use app\modules\orders\models\query\UsersQuery;
-use app\modules\orders\models\query\ServicesQuery;
+
+
 
 /**
+ * This is the model class for table 'orders'
+ * @package app\modules\orders\models
  * @property integer $id
- * @property integer $userID
+ * @property mixed $user_id
  * @property integer $quantity
  * @property integer $created_at
- * @property integer $serviceID
+ * @property mixed $serviceID
  * @property integer $status
  * @property integer $mode
  * @property string  $link
  * @property string  $fullName
- */
-
-/**
- * Class Orders
- * @package app\modules\orders\models
+ *
+ * @property Users $users
+ * @property Services $services
  */
 class Orders extends ActiveRecord
 {
@@ -68,25 +68,25 @@ class Orders extends ActiveRecord
     }
 
     /**
-     * @return UsersQuery
+     * @return \yii\db\ActiveQuery
      */
-    public function getUsers(): UsersQuery
+    public function getUsers(): \yii\db\ActiveQuery
     {
         return $this->hasOne(Users::class, ['id' => 'user_id']);
     }
 
     /**
-     * @return ServicesQuery
+     * @return \yii\db\ActiveQuery
      */
-    public function getServices(): ServicesQuery
+    public function getServices(): \yii\db\ActiveQuery
     {
         return $this->hasOne(Services::class, ['id' => 'service_id']);
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getServiceType()
+    public function getServiceType(): string
     {
         return $this->services->name;
     }
@@ -100,7 +100,7 @@ class Orders extends ActiveRecord
     }
 
     /**
-     * @return mixed|null
+     * @return mixed
      */
     public function getUserID()
     {

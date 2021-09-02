@@ -13,8 +13,7 @@ class OrdersQuery extends ActiveQuery
 {
 
     /**
-     * @param null $db
-     * @return array|\yii\db\ActiveRecord[]
+     * {@inheritDoc}
      */
     public function all($db = null)
     {
@@ -22,12 +21,10 @@ class OrdersQuery extends ActiveQuery
     }
 
     /**
-     * @param null $db
-     * @return array|\yii\db\ActiveRecord|null
+     * {@inheritDoc}
      */
     public function one($db = null)
     {
-
         return parent::one($db);
     }
 }

@@ -13,17 +13,15 @@ class ServicesQuery extends ActiveQuery
 {
 
     /**
-     * @param null $db
-     * @return array|\yii\db\ActiveRecord[]
+     * {@inheritDoc}
      */
-    public function all($db = null)
+    public function all($db = null): array
     {
         return parent::all($db);
     }
 
     /**
-     * @param null $db
-     * @return array|\yii\db\ActiveRecord|null
+     * {@inheritDoc}
      */
     public function one($db = null)
     {

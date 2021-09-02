@@ -11,9 +11,7 @@ use app\modules\orders\models\Services;
  */
 class ServicesSearch extends Services
 {
-
     public $service_count;
-
 
     /**
      * {@inheritdoc}

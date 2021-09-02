@@ -21,6 +21,7 @@ class OrdersSearch extends Orders
     public $serviceID;
     public $searchType;
     public $searchWord;
+    public $mode;
 
 
     /**
@@ -44,10 +45,10 @@ class OrdersSearch extends Orders
     }
 
     /**
-     * @param $params
+     * @param array $params
      * @return ActiveDataProvider
      */
-    public function search($params): ActiveDataProvider
+    public function search(array $params): ActiveDataProvider
     {
         $query = Orders::find();
         $query->joinWith(['users', 'services']);
@@ -59,30 +60,13 @@ class OrdersSearch extends Orders
         ]);
 
         $dataProvider->setSort([
-            'attributes' => [
-                'id',
-                'fullName' => [
-                    'asc' => ['first_name' => SORT_ASC, 'last_name' => SORT_ASC],
-                    'desc' => ['first_name' => SORT_DESC, 'last_name' => SORT_DESC],
-                    'label' => 'Full Name',
-                    'default' => SORT_ASC
-                ],
-            ],
             'defaultOrder' => ['id' => SORT_DESC],
         ]);
+
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
-        if (Yii::$app->request->getQueryParam('status') == 'all') {
-            $this->status = '';
-        }
-        if (Yii::$app->request->getQueryParam('mode') == 'all') {
-            $this->mode = '';
-        }
-        if (Yii::$app->request->getQueryParam('serviceType') == 'all') {
-            $this->serviceType = '';
-        }
-        $query->andFilterWhere(['orders.mode' => $this->mode, 'services.id' => $this->serviceType, 'orders.status' => $this->status]);
+        $query->andFilterWhere(['orders.mode' => is_numeric($this->mode) ? $this->mode : '', 'services.id' => is_numeric($this->serviceType) ? $this->serviceType : '', 'orders.status' => is_numeric($this->status) ? $this->status : '']);
 
         if ($this->searchWord) {
 

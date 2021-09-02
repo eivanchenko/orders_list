@@ -6,6 +6,10 @@ use Yii;
 use yii\base\Widget;
 use yii\grid\GridView;
 
+/**
+ * Class OrdersGridView
+ * @package app\modules\orders\widgets
+ */
 class OrdersGridView  extends Widget
 {
     public $dataProvider;

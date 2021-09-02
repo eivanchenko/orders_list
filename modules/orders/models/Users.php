@@ -6,15 +6,11 @@ use app\modules\orders\models\query\UsersQuery;
 use yii\db\ActiveRecord;
 
 /**
+ * This is the model class for table 'orders'
+ * @package app\modules\orders\models
  * @property integer $id
  * @property string  $first_name
  * @property string  $last_name
- */
-
-
-/**
- * Class Users
- * @package app\modules\orders\models
  */
 class Users extends ActiveRecord
 {

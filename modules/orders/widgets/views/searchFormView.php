@@ -2,7 +2,6 @@
 
 namespace app\modules\orders\widgets\views;
 
-use Yii;
 use yii\helpers\Html;
 
 /**

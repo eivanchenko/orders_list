@@ -6,13 +6,10 @@ use yii\db\ActiveRecord;
 use app\modules\orders\models\query\ServicesQuery;
 
 /**
+ * This is the model class for table 'services'
+ * @package app\modules\orders\models
  * @property integer $id
  * @property string  $name
- */
-
-/**
- * Class Services
- * @package app\modules\orders\models
  */
 class Services extends ActiveRecord
 {
