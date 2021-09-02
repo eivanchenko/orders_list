@@ -92,9 +92,9 @@ class Orders extends ActiveRecord
     }
 
     /**
-     * @return mixed
+     * @return integer
      */
-    public function getServiceID()
+    public function getServiceID(): int
     {
         return $this->services->id;
     }

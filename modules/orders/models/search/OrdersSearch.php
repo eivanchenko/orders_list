@@ -46,9 +46,10 @@ class OrdersSearch extends Orders
 
     /**
      * @param array $params
-     * @return ActiveDataProvider
+     * @param boolean $rawRequest used when a raw query is needed
+     * @return \app\modules\orders\models\query\OrdersQuery|ActiveDataProvider
      */
-    public function search(array $params): ActiveDataProvider
+    public function search(array $params, bool $rawRequest = false)
     {
         $query = Orders::find();
         $query->joinWith(['users', 'services']);
@@ -88,53 +89,20 @@ class OrdersSearch extends Orders
                     break;
             }
         }
-        return $dataProvider;
-    }
 
+        return $rawRequest ? $query : $dataProvider;
+    }
 
     /**
      * @return array
      */
     public static function getServicesTypesCount(): array
     {
-        $mode = Yii::$app->request->getQueryParam('mode');
-        $status = Yii::$app->request->getQueryParam('status');
-        $serviceType = Yii::$app->request->getQueryParam('serviceType');
-        $searchWord =  Yii::$app->request->getQueryParam('searchWord');
-        $searchType = Yii::$app->request->getQueryParam('searchType');
-
-        $subQuery  = (new Query())->select(['service_id AS id', 'count(*) AS count'])->from(['orders', 'users'])->andWhere('orders.user_id = users.id')->groupBy('service_id');
-        if (is_numeric($mode)) {
-            $subQuery->andWhere(['orders.mode' => $mode]);
-        }
-        if (is_numeric($status)) {
-            $subQuery->andWhere(['orders.status' => $status]);
-        }
-        if (is_numeric($searchType)) {
-            switch ($searchType) {
-                case 1:
-                    $subQuery->andWhere(['=', 'orders.id', $searchWord]);
-                    break;
-                case 2:
-                    $subQuery->andWhere(['like', 'orders.link', $searchWord]);
-                    break;
-                case 3:
-                    $subQuery->andWhere(
-                        [
-                            'like',
-                            'CONCAT(users.first_name, " ", users.last_name)',
-                            $searchWord
-                        ]
-                    );
-                    break;
-            }
-        }
-        $mainQuery = (new Query())->select(['subQuery.id', 'subQuery.count', 'services.name'])->from(['subQuery' => $subQuery])->join('LEFT JOIN', 'services', 'subQuery.id = services.id')->orderBy(['subQuery.count' => SORT_DESC]);
-        if (is_numeric($serviceType)) {
-            $mainQuery->andWhere(['services.id' => $serviceType]);
-        }
-
-        $doneQuery = (new Query())->select(['services.id', 'services.name', 'main.count'])->from(['services'])->join('LEFT JOIN', ['main' => $mainQuery], 'main.id = services.id')->orderBy(['main.count' => SORT_DESC])->all();
+        $queryParams = Yii::$app->request->queryParams ?: ['mode' => 'all'];
+        $ordersSearch =  new OrdersSearch();
+        $mainQuery = $ordersSearch->search($queryParams, true);
+        $subQuery  = (new Query())->select(['service_id AS id', 'count(*) AS count'])->from(['subQuery' => $mainQuery])->groupBy('service_id')->orderBy(['count' => SORT_DESC]);
+        $doneQuery = (new Query())->select(['services.id', 'services.name', 'main.count'])->from(['services'])->join('LEFT JOIN', ['main' => $subQuery], 'main.id = services.id')->orderBy(['main.count' => SORT_DESC])->all();
         $totalCount = array_reduce(
             $doneQuery,
             function ($total, $item) {
@@ -148,6 +116,6 @@ class OrdersSearch extends Orders
 
             $doneQuery
         );
-        return empty($doneQuery) ? [] : $doneQuery;
+        return  empty($doneQuery) ? [] : $doneQuery;
     }
 }
