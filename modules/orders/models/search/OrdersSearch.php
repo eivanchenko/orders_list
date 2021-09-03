@@ -15,6 +15,8 @@ use orders\models\Orders;
  */
 class OrdersSearch extends Orders
 {
+    const PAGE_SIZE = 100;
+
     public $fullName;
     public $status;
     public $serviceType;
@@ -56,7 +58,7 @@ class OrdersSearch extends Orders
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSize' => 100,
+                'pageSize' => self::PAGE_SIZE,
             ],
         ]);
 
@@ -72,13 +74,13 @@ class OrdersSearch extends Orders
         if ($this->searchWord) {
 
             switch ($this->searchType) {
-                case 1:
+                case self::SEARCH_ORDER_ID:
                     $query->andWhere(['=', 'orders.id', $this->searchWord]);
                     break;
-                case 2:
+                case self::SEARCH_LINK:
                     $query->andWhere(['like', 'orders.link', $this->searchWord]);
                     break;
-                case 3:
+                case self::SEARCH_USERNAME:
                     $query->andWhere(
                         [
                             'like',
@@ -111,7 +113,7 @@ class OrdersSearch extends Orders
         );
         $doneQuery = ArrayHelper::merge(
             [
-                ['id' => '', 'name' => '', 'count' => $totalCount ?: '0'],
+                ['id' => '', 'name' => 'all', 'count' => $totalCount ?: '0'],
             ],
 
             $doneQuery

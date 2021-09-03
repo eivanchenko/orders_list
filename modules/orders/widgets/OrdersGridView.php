@@ -25,17 +25,21 @@ class OrdersGridView  extends Widget
         $this->ordersGrid = GridView::widget([
             'dataProvider' => $this->dataProvider,
             'summary' => '{begin} to {end} of {totalCount}',
-            'layout' => "{items}\n<div class='row'><div class='col-sm-8'>{pager}</div><div class='col-sm-4 pagination-counters'>{summary}</div></div>",
+            'layout' => "{items}\n<div class='row'><div class='col-sm-8'><nav>{pager}</nav></div><div class='col-sm-4 pagination-counters'>{summary}</div></div>",
             'columns' => [
                 'id',
                 'fullName:html',
-                'link', 'quantity', [
+                [
+                    'attribute' => 'link',
+                    'contentOptions' => ['class' => 'link']
+                ], 'quantity', [
                     'attribute' => 'serviceType', 'format' => 'html',
                     'headerOptions' => ['class' => 'dropdown-th'],
                     'value' => function ($model) {
                         return '<span class="label-id"> ' .  $model->serviceID . '</span>  ' .  Yii::t('app', $model->serviceType);
                     },
                     'header' =>  ServiceDropDown::widget(),
+                    'contentOptions' => ['class' => 'service']
                 ],
                 ['attribute' => 'status', 'format' => 'text', 'filter' => false, 'label' =>  Yii::t('app', 'label.status'),  'value' => function ($model) {
                     return $model->getStatusType()[$model->status]['type'];
@@ -47,7 +51,10 @@ class OrdersGridView  extends Widget
                     }
                 ],           [
                     'attribute' => 'created_at',
-                    'format' => ['date', 'php:Y-m-d h:i:s'],
+                    'format' => 'html',
+                    'value' => function ($model) {
+                return '<span class="nowrap">'.  date('Y-m-d',$model->created_at) .'</span><span class="nowrap">' . date('H:i:s',$model->created_at).'</span>';
+                    },
                     'label' => Yii::t('app', 'label.created')
                 ],
             ],

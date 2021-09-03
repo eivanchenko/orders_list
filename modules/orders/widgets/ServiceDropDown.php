@@ -32,7 +32,7 @@ class ServiceDropDown extends Widget
             'encodeLabels' => false,
             'items' =>
             ArrayHelper::map(OrdersSearch::getServicesTypesCount(), 'id',  function ($model) {
-                if ($model['name'] == '') {
+                if ($model['name'] == 'all') {
                     return [
                         'label' => Yii::t('app', 'label.all') . ' (' . $model['count'] .  ')',
                         'url' => Url::current(['serviceType' => 'all']),

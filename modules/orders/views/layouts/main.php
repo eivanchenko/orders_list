@@ -50,9 +50,7 @@ AppAsset::register($this);
     NavBar::end();
     ?>
 
-    <div class="container-fluid">
         <?= $content ?>
-    </div>
     <?php $this->endBody() ?>
 </body>
 

@@ -82,7 +82,6 @@ return [
         ],
         'request' => [
             'cookieValidationKey' => self::env('COOKIE_VALIDATION_KEY', null, !YII_ENV_TEST),
-            'trustedHosts' => explode(',', self::env('PROXY_HOST', '192.168.0.0/24')),
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,
@@ -90,10 +89,6 @@ return [
             'rules' => [
                 '/orders' => 'orders/orders/index'
             ]
-        ],
-        'formatter' => [
-            'dateFormat' => 'yyyy-mm-dd hh:mm:ss',
-
         ],
         'i18n' => [
             'translations' => [
