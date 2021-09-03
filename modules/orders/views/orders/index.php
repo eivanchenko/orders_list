@@ -1,11 +1,11 @@
 <?php
 
-use app\modules\orders\widgets\OrdersGridView;
+use orders\widgets\OrdersGridView;
 
 
 /**
  * @var  $this yii\web\View
- * @var  $searchModel app\modules\orders\models\search\OrdersSearch 
+ * @var  $searchModel orders\models\search\OrdersSearch 
  * @var  $dataProvider  yii\data\ActiveDataProvider */
 ?>
 

@@ -1,13 +1,13 @@
 <?php
 
-namespace app\modules\orders\models\search;
+namespace orders\models\search;
 
 use yii\base\Model;
-use app\modules\orders\models\Services;
+use orders\models\Services;
 
 /**
  * Class ServicesSearch
- * @package app\modules\orders\models
+ * @package orders\models
  */
 class ServicesSearch extends Services
 {

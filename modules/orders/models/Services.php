@@ -1,13 +1,13 @@
 <?php
 
-namespace app\modules\orders\models;
+namespace orders\models;
 
 use yii\db\ActiveRecord;
-use app\modules\orders\models\query\ServicesQuery;
+use orders\models\query\ServicesQuery;
 
 /**
  * This is the model class for table 'services'
- * @package app\modules\orders\models
+ * @package orders\models
  * @property integer $id
  * @property string  $name
  */

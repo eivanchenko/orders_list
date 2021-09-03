@@ -1,9 +1,9 @@
 <?php
 
-namespace app\modules\orders\widgets;
+namespace orders\widgets;
 
-use app\modules\orders\components\OrdersHelpers;
-use app\modules\orders\models\search\OrdersSearch;
+use orders\components\OrdersHelpers;
+use orders\models\search\OrdersSearch;
 use Yii;
 use yii\base\Widget;
 use yii\bootstrap\Dropdown;
@@ -12,7 +12,7 @@ use yii\helpers\Url;
 
 /**
  * Class ServiceDropDown
- * @package app\modules\orders\widgets
+ * @package orders\widgets
  */
 class ServiceDropDown extends Widget
 {

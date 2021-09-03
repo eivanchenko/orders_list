@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\orders\widgets\views;
+namespace orders\widgets\views;
 
 use yii\helpers\Html;
 

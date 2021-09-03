@@ -1,17 +1,17 @@
 <?php
 
-namespace app\modules\orders\models\search;
+namespace orders\models\search;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use yii\db\Query;
 use yii\helpers\ArrayHelper;
-use app\modules\orders\models\Orders;
+use orders\models\Orders;
 
 /**
  * Class OrdersSearch
- * @package app\modules\orders\models
+ * @package orders\models
  */
 class OrdersSearch extends Orders
 {
@@ -47,7 +47,7 @@ class OrdersSearch extends Orders
     /**
      * @param array $params
      * @param boolean $rawRequest used when a raw query is needed
-     * @return \app\modules\orders\models\query\OrdersQuery|ActiveDataProvider
+     * @return \orders\models\query\OrdersQuery|ActiveDataProvider
      */
     public function search(array $params, bool $rawRequest = false)
     {

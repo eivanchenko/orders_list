@@ -1,12 +1,12 @@
 <?php
 
-namespace app\modules\orders\models\search;
+namespace orders\models\search;
 
-use app\modules\orders\models\Users;
+use orders\models\Users;
 
 /**
  * Class UsersSearch
- * @package app\modules\orders\models
+ * @package orders\models
  */
 class UsersSearch extends Users
 {

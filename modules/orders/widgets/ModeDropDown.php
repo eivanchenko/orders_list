@@ -1,8 +1,8 @@
 <?php
 
-namespace app\modules\orders\widgets;
+namespace orders\widgets;
 
-use app\modules\orders\components\OrdersHelpers;
+use orders\components\OrdersHelpers;
 use Yii;
 use yii\base\Widget;
 use yii\bootstrap\Dropdown;
@@ -10,7 +10,7 @@ use yii\helpers\Url;
 
 /**
  * Class ModeDropDown
- * @package app\modules\orders\widgets
+ * @package orders\widgets
  */
 class ModeDropDown extends Widget
 {

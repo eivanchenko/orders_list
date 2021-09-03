@@ -1,9 +1,9 @@
 <?php
 
-use app\modules\orders\widgets\StatusLink;
-use app\modules\orders\widgets\SearchForm;
+use orders\widgets\StatusLink;
+use orders\widgets\SearchForm;
 
-/** @var $model app\modules\orders\models\Orders */
+/** @var $model orders\models\Orders */
 
 ?>
 <ul class="nav nav-tabs p-b">

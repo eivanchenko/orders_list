@@ -1,14 +1,14 @@
 <?php
 
-namespace app\modules\orders\controllers;
+namespace orders\controllers;
 
 use Yii;
 use yii\web\Controller;
-use app\modules\orders\models\search\OrdersSearch;
+use orders\models\search\OrdersSearch;
 
 /**
  * Class OrdersController
- * @package app\modules\orders\controllers
+ * @package orders\controllers
  */
 class OrdersController extends Controller
 {

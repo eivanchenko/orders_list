@@ -1,18 +1,18 @@
 <?php
 
-namespace app\modules\orders\widgets;
+namespace orders\widgets;
 
-use app\modules\orders\components\OrdersHelpers;
+use orders\components\OrdersHelpers;
 use Yii;
 use yii\base\Widget;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use app\modules\orders\models\Orders;
+use orders\models\Orders;
 
 /**
  * Class StatusLink
- * @package app\modules\orders\widgets
+ * @package orders\widgets
  */
 class StatusLink extends Widget
 {

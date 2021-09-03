@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\orders\components;
+namespace orders\components;
 
 use Yii;
 

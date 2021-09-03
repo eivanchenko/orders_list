@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\orders\widgets;
+namespace orders\widgets;
 
 use Yii;
 use yii\base\Widget;
@@ -8,7 +8,7 @@ use yii\grid\GridView;
 
 /**
  * Class OrdersGridView
- * @package app\modules\orders\widgets
+ * @package orders\widgets
  */
 class OrdersGridView  extends Widget
 {

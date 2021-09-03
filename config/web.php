@@ -5,7 +5,7 @@
 $bootstrap = ['log'];   // Must be 1st bootstrapped component
 $modules = [
     'orders' => [
-        'class' => 'app\modules\orders\OrdersModule'
+        'class' => 'orders\OrdersModule'
     ],
 ];
 if (YII_ENV_DEV) {
@@ -27,13 +27,14 @@ return [
     'aliases' => [
         '@bower' => '/var/www/vendor/bower-asset',
         '@npm' => '/var/www/vendor/npm-asset',
+        '@orders' => '/var/www/html/modules/orders'
     ],
     'defaultRoute' => 'orders/orders/index',
     'basePath' => '/var/www/html',
     'language' => 'en',
     'bootstrap' => $bootstrap,
     'modules' => $modules,
-    'vendorPath' => '/var/www/vendor',
+    'vendorPath' => '/var/www/html/vendor',
     'catchAll' => self::env('MAINTENANCE', false) ? ['site/maintenance'] : null,
     'components' => [
         'cache' => self::env('DISABLE_CACHE', false) ?

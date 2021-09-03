@@ -1,16 +1,16 @@
 <?php
 
-namespace app\modules\orders\models;
+namespace orders\models;
 
 use Yii;
 use yii\db\ActiveRecord;
-use app\modules\orders\models\query\OrdersQuery;
+use orders\models\query\OrdersQuery;
 
 
 
 /**
  * This is the model class for table 'orders'
- * @package app\modules\orders\models
+ * @package orders\models
  * @property integer $id
  * @property mixed $user_id
  * @property integer $quantity

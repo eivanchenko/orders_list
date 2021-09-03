@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\orders\widgets;
+namespace orders\widgets;
 
 use Yii;
 use yii\base\Widget;
@@ -8,11 +8,11 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
-use app\modules\orders\models\Orders;
+use orders\models\Orders;
 
 /**
  * Class SearchForm
- * @package app\modules\orders\widgets
+ * @package orders\widgets
  */
 class SearchForm extends Widget
 {
