@@ -10,4 +10,3 @@ vendor/
 *.bak
 *.swp
 .vimrc
-modules/orders/models/search/OrdersSearch.php

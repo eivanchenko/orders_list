@@ -28,12 +28,6 @@ class OrdersSearch extends Orders
     public $mode;
 
 
-//    public function __construct($config = [])
-//    {
-//        parent::__construct($config);
-//    }
-
-
     /**
      * @return array
      */
@@ -42,8 +36,6 @@ class OrdersSearch extends Orders
         $queryParams = Yii::$app->request->queryParams ?: ['mode' => 'all'];
         $ordersSearch = new OrdersSearch();
         $mainQuery = $ordersSearch->search($queryParams, true);
-//        $data =  self::getData($queryParams);
-//        $mainQuery = self::setFilters($data);
         $subQuery = (new Query())->
         select(['service_id AS id', 'count(*) AS count'])->
         from(['subQuery' => $mainQuery])->
@@ -122,83 +114,6 @@ class OrdersSearch extends Orders
 
         return $rawRequest ? $query : $dataProvider;
     }
-
-//
-//    public function getData($params)
-//    {
-//
-//
-//        $query = Orders::find();
-//        $query->joinWith(['users', 'services']);
-//
-//        $this->load($params);
-////        print_r($this);die();
-////        $query->andFilterWhere([
-////            'orders.mode' => is_numeric($params['mode']) ? $params['mode'] : '',
-////            'services.id' => is_numeric($params['serviceType']) ? $params['serviceType'] : '',
-////            'orders.status' => is_numeric($params['status']) ? $params['status'] : ''
-////
-//////            'orders.mode' => is_numeric($this->mode) ? $this->mode : '',
-//////            'services.id' => is_numeric($this->serviceType) ? $this->serviceType : '',
-//////            'orders.status' => is_numeric($this->status) ? $this->status : ''
-////        ]);
-////        if ($this->searchWord) {
-////
-////            switch ($this->searchType) {
-////                case self::SEARCH_ORDER_ID:
-////                    $query->andWhere(['=', 'orders.id', $this->searchWord]);
-////                    break;
-////                case self::SEARCH_LINK:
-////                    $query->andWhere(['like', 'orders.link', $this->searchWord]);
-////                    break;
-////                case self::SEARCH_USERNAME:
-////                    $query->andWhere(
-////                        [
-////                            'like',
-////                            'CONCAT(users.first_name, " ", users.last_name)',
-////                            $this->searchWord
-////                        ]
-////                    );
-////                    break;
-////            }
-////        }
-//        return $query;
-//
-//    }
-//
-//    public static function getDataFiltered( ) {
-//        self::getData();
-//    }
-
-//    public function setFilters($query)
-//    {
-//        $query->andFilterWhere([
-//            'orders.mode' => is_numeric($this->mode) ? $this->mode : '',
-//            'services.id' => is_numeric($this->serviceType) ? $this->serviceType : '',
-//            'orders.status' => is_numeric($this->status) ? $this->status : ''
-//        ]);
-//        if ($this->searchWord) {
-//
-//            switch ($this->searchType) {
-//                case self::SEARCH_ORDER_ID:
-//                    $query->andWhere(['=', 'orders.id', $this->searchWord]);
-//                    break;
-//                case self::SEARCH_LINK:
-//                    $query->andWhere(['like', 'orders.link', $this->searchWord]);
-//                    break;
-//                case self::SEARCH_USERNAME:
-//                    $query->andWhere(
-//                        [
-//                            'like',
-//                            'CONCAT(users.first_name, " ", users.last_name)',
-//                            $this->searchWord
-//                        ]
-//                    );
-//                    break;
-//            }
-//        }
-//        return $query;
-//    }
 
     /**
      * {@inheritdoc}

@@ -4,14 +4,6 @@
 #
 #  - PHP runtime
 #  - PHP extensions
-#  - Composer packages
-
-
-# Build stage 1: Install composer packages
-FROM composer AS vendor
-COPY composer.json /app
-COPY composer.lock /app
-RUN ["composer", "install", "--ignore-platform-reqs", "--prefer-dist"]
 
 
 # Build stage 2: Final image
@@ -72,9 +64,6 @@ ADD ./etc/services.d /etc/services.d
 # Nginx default server and PHP defaults
 ADD ./etc/nginx/default.conf /etc/nginx/conf.d/default.conf
 ADD ./etc/php7/zz-docker.conf /etc/php7/php-fpm.d/zz-docker.conf
-
-# Composer packages from build stage 1
-COPY --from=vendor /var/www/vendor /var/www/vendor
 
 WORKDIR /var/www/html
 

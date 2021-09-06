@@ -27,7 +27,9 @@ return [
     'aliases' => [
         '@bower' => '/var/www/vendor/bower-asset',
         '@npm' => '/var/www/vendor/npm-asset',
-        '@orders' => '/var/www/html/modules/orders'
+        '@orders' => '/var/www/html/modules/orders',
+        '@ordersUrl'=> 'orders/index'
+
     ],
     'defaultRoute' => 'orders/orders/index',
     'basePath' => '/var/www/html',
@@ -86,9 +88,13 @@ return [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
+            'enableStrictParsing' => true,
             'rules' => [
-                '/orders' => 'orders/orders/index'
+                '/orders' => 'orders/orders/index',
+                // '<module>:\w+' => '<module>'
+
             ]
+
         ],
         'i18n' => [
             'translations' => [
