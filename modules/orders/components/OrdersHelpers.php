@@ -22,12 +22,12 @@ class OrdersHelpers
         $testExpression = Yii::$app->request->getQueryParam($type) == $parameter;
 
         if ($type == 'status' && $parameter == 'all') {
-            return ($testExpression  ||  Yii::$app->request->getQueryParam($type) == null) ? $liActive : $liNotActive;
+            return ($testExpression || Yii::$app->request->getQueryParam($type) == null) ? $liActive : $liNotActive;
         } elseif ($type == 'status') {
             return $testExpression ? $liActive : $liNotActive;
         } else {
             if ($parameter == 'all') {
-                return ($testExpression ||  Yii::$app->request->getQueryParam($type) == null) ? 'active' : null;
+                return ($testExpression || Yii::$app->request->getQueryParam($type) == null) ? 'active' : null;
             } else {
                 return $testExpression ? 'active' : null;
             }

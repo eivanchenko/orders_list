@@ -1,7 +1,7 @@
 <?php
 
-use orders\widgets\StatusLink;
 use orders\widgets\SearchForm;
+use orders\widgets\StatusLink;
 
 /** @var $model orders\models\Orders */
 

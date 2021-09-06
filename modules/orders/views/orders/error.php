@@ -4,8 +4,9 @@ use yii\helpers\Html;
 
 /**
  * @var  $this yii\web\View
- * @var  $message string  
- * @var  $name string  */
+ * @var  $message string
+ * @var  $name string
+ */
 
 $this->title = $name;
 

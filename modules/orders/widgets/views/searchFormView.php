@@ -10,16 +10,18 @@ use yii\helpers\Html;
  * @var $paramsField array
  * @var $activeForm yii\widgets\ActiveForm
  * @var $submitButton string
- * @var $dropDown  string */
+ * @var $dropDown  string
+ */
 
 ?>
 <li class="pull-right custom-search">
     <?php $form = $activeForm::begin($paramsForm) ?>
     <div class="input-group">
 
-        <?= $form->field($model, $paramsField['attribute'])->textInput()->input($paramsField['type'], ['placeholder' => $paramsField['placeholder']])->label($paramsField['label']); ?>
+        <?= $form->field($model, $paramsField['attribute'])->textInput()->
+        input($paramsField['type'], ['placeholder' => $paramsField['placeholder']])->label($paramsField['label']); ?>
         <?= Html::beginTag('span', ['class' => 'input-group-btn search-select-wrap']) ?>
-        <?= $dropDown  ?>
+        <?= $dropDown ?>
         <?= $submitButton ?>
         <?= Html::endTag('span') ?>
     </div>

@@ -9,9 +9,12 @@ return [
     'status.type.error' => 'Error',
     'search.type.orderID' => 'Order ID',
     'search.type.link' => 'Link',
-    'search.type.username' =>  'Username',
+    'search.type.username' => 'Username',
+
     'mode.manual' => 'Manual',
     'mode.auto' => 'Auto',
+    'mode.all' => 'All',
+
     'label.all' => 'All',
     'label.user' => 'User',
     'label.link' => 'Link',
@@ -21,5 +24,6 @@ return [
     'label.status' => 'Status',
     'label.mode' => 'Mode',
     'label.created' => 'Created',
+
     'search.placeholder' => 'Search orders',
 ];

@@ -9,8 +9,8 @@ use yii\db\ActiveRecord;
  * This is the model class for table 'orders'
  * @package orders\models
  * @property integer $id
- * @property string  $first_name
- * @property string  $last_name
+ * @property string $first_name
+ * @property string $last_name
  */
 class Users extends ActiveRecord
 {
@@ -20,6 +20,14 @@ class Users extends ActiveRecord
     public static function tableName(): string
     {
         return 'users';
+    }
+
+    /**
+     * @return UsersQuery
+     */
+    public static function find(): UsersQuery
+    {
+        return new UsersQuery(get_called_class());
     }
 
     /**
@@ -42,13 +50,5 @@ class Users extends ActiveRecord
             'first_name' => 'First Name',
             'last_name' => 'Last Name',
         ];
-    }
-
-    /**
-     * @return UsersQuery
-     */
-    public static function find(): UsersQuery
-    {
-        return new UsersQuery(get_called_class());
     }
 }

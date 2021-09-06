@@ -2,9 +2,9 @@
 
 namespace orders\controllers;
 
+use orders\models\search\OrdersSearch;
 use Yii;
 use yii\web\Controller;
-use orders\models\search\OrdersSearch;
 
 /**
  * Class OrdersController

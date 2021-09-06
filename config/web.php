@@ -23,7 +23,7 @@ if (YII_ENV_DEV) {
 
 return [
     'id' => 'basic',
-    'name' =>  $_ENV['COMPOSE_PROJECT_NAME'],
+    'name' => $_ENV['COMPOSE_PROJECT_NAME'],
     'aliases' => [
         '@bower' => '/var/www/vendor/bower-asset',
         '@npm' => '/var/www/vendor/npm-asset',

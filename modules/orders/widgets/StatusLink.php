@@ -3,12 +3,12 @@
 namespace orders\widgets;
 
 use orders\components\OrdersHelpers;
+use orders\models\Orders;
 use Yii;
 use yii\base\Widget;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use orders\models\Orders;
 
 /**
  * Class StatusLink
@@ -38,15 +38,20 @@ class StatusLink extends Widget
             array_push(
                 $statusLinks,
                 OrdersHelpers::getActiveClass('status', 'all') .
-                    Html::a($statusTypeAll, Url::current(['index', 'status' => 'all', 'serviceType' => 'all', 'mode' => 'all'])) .
-                    Html::endTag('li')
+                Html::a($statusTypeAll, Url::current([
+                    'index',
+                    'status' => 'all',
+                    'serviceType' => 'all',
+                    'mode' => 'all'
+                ])) .
+                Html::endTag('li')
             );
         } else {
             array_push(
                 $statusLinks,
                 OrdersHelpers::getActiveClass('status', 'all') .
-                    Html::a($statusTypeAll, Url::to(['index'])) .
-                    Html::endTag('li')
+                Html::a($statusTypeAll, Url::to(['index'])) .
+                Html::endTag('li')
             );
         }
 
@@ -55,15 +60,29 @@ class StatusLink extends Widget
                 array_push(
                     $statusLinks,
                     OrdersHelpers::getActiveClass('status', ArrayHelper::getValue($item, "id")) .
-                        Html::a(ArrayHelper::getValue($item, "type"), Url::current(['index', 'status' => ArrayHelper::getValue($item, "id"), 'serviceType' => 'all', 'mode' => 'all'])) .
-                        Html::endTag('li')
+                    Html::a(
+                        ArrayHelper::getValue($item, "type"),
+                        Url::current([
+                            'index',
+                            'status' => ArrayHelper::getValue($item, "id"),
+                            'serviceType' => 'all',
+                            'mode' => 'all'
+                        ])
+                    ) .
+                    Html::endTag('li')
                 );
             } else {
                 array_push(
                     $statusLinks,
                     OrdersHelpers::getActiveClass('status', ArrayHelper::getValue($item, "id")) .
-                        Html::a(ArrayHelper::getValue($item, "type"), Url::to(['index', 'status' => ArrayHelper::getValue($item, "id")])) .
-                        Html::endTag('li')
+                    Html::a(
+                        ArrayHelper::getValue($item, "type"),
+                        Url::to([
+                            'index',
+                            'status' => ArrayHelper::getValue($item, "id")
+                        ])
+                    ) .
+                    Html::endTag('li')
                 );
             }
         };

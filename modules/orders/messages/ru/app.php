@@ -10,8 +10,11 @@ return [
     'search.type.orderID' => 'ID Заказа',
     'search.type.link' => 'Ссылка',
     'search.type.username' => 'Имя пользователя',
+
     'mode.manual' => 'Ручной',
     'mode.auto' => 'Авто',
+    'mode.all' => 'Все',
+
     'label.all' => 'Все',
     'label.user' => 'Пользователь',
     'label.link' => 'Ссылка',
@@ -21,5 +24,6 @@ return [
     'label.status' => 'Статус',
     'label.mode' => 'Режим',
     'label.created' => 'Создан',
+
     'search.placeholder' => 'Поиск заказов',
 ];

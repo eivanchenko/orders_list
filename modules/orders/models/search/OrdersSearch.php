@@ -2,16 +2,18 @@
 
 namespace orders\models\search;
 
+use orders\models\Orders;
+use orders\models\query\OrdersQuery;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use yii\db\Query;
 use yii\helpers\ArrayHelper;
-use orders\models\Orders;
 
 /**
  * Class OrdersSearch
  * @package orders\models
+ * @var $model Orders
  */
 class OrdersSearch extends Orders
 {
@@ -26,30 +28,52 @@ class OrdersSearch extends Orders
     public $mode;
 
 
-    /**
-     * {@inheritdoc}
-     */
-    public function rules(): array
-    {
-        return [
-            [['userID',], 'integer'],
-            [['mode'], 'string'],
-            [['status', 'serviceType', 'serviceID', 'searchType', 'searchWord'], 'trim']
-        ];
-    }
+//    public function __construct($config = [])
+//    {
+//        parent::__construct($config);
+//    }
+
 
     /**
-     * {@inheritdoc}
+     * @return array
      */
-    public function scenarios(): array
+    public static function getServicesTypesCount(): array
     {
-        return Model::scenarios();
+        $queryParams = Yii::$app->request->queryParams ?: ['mode' => 'all'];
+        $ordersSearch = new OrdersSearch();
+        $mainQuery = $ordersSearch->search($queryParams, true);
+//        $data =  self::getData($queryParams);
+//        $mainQuery = self::setFilters($data);
+        $subQuery = (new Query())->
+        select(['service_id AS id', 'count(*) AS count'])->
+        from(['subQuery' => $mainQuery])->
+        groupBy('service_id')->
+        orderBy(['count' => SORT_DESC]);
+
+        $doneQuery = (new Query())->
+        select(['services.id', 'services.name', 'main.count'])->
+        from(['services'])->join('LEFT JOIN', ['main' => $subQuery], 'main.id = services.id')->
+        orderBy(['main.count' => SORT_DESC])->all();
+        $totalCount = array_reduce(
+            $doneQuery,
+            function ($total, $item) {
+                return $total += $item['count'];
+            }
+        );
+        $doneQuery = ArrayHelper::merge(
+            [
+                ['id' => '', 'name' => 'all', 'count' => $totalCount ?: '0'],
+            ],
+
+            $doneQuery
+        );
+        return empty($doneQuery) ? [] : $doneQuery;
     }
 
     /**
      * @param array $params
      * @param boolean $rawRequest used when a raw query is needed
-     * @return \orders\models\query\OrdersQuery|ActiveDataProvider
+     * @return OrdersQuery|ActiveDataProvider
      */
     public function search(array $params, bool $rawRequest = false)
     {
@@ -69,7 +93,11 @@ class OrdersSearch extends Orders
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
-        $query->andFilterWhere(['orders.mode' => is_numeric($this->mode) ? $this->mode : '', 'services.id' => is_numeric($this->serviceType) ? $this->serviceType : '', 'orders.status' => is_numeric($this->status) ? $this->status : '']);
+        $query->andFilterWhere([
+            'orders.mode' => is_numeric($this->mode) ? $this->mode : '',
+            'services.id' => is_numeric($this->serviceType) ? $this->serviceType : '',
+            'orders.status' => is_numeric($this->status) ? $this->status : ''
+        ]);
 
         if ($this->searchWord) {
 
@@ -95,29 +123,100 @@ class OrdersSearch extends Orders
         return $rawRequest ? $query : $dataProvider;
     }
 
-    /**
-     * @return array
-     */
-    public static function getServicesTypesCount(): array
-    {
-        $queryParams = Yii::$app->request->queryParams ?: ['mode' => 'all'];
-        $ordersSearch =  new OrdersSearch();
-        $mainQuery = $ordersSearch->search($queryParams, true);
-        $subQuery  = (new Query())->select(['service_id AS id', 'count(*) AS count'])->from(['subQuery' => $mainQuery])->groupBy('service_id')->orderBy(['count' => SORT_DESC]);
-        $doneQuery = (new Query())->select(['services.id', 'services.name', 'main.count'])->from(['services'])->join('LEFT JOIN', ['main' => $subQuery], 'main.id = services.id')->orderBy(['main.count' => SORT_DESC])->all();
-        $totalCount = array_reduce(
-            $doneQuery,
-            function ($total, $item) {
-                return $total += $item['count'];
-            }
-        );
-        $doneQuery = ArrayHelper::merge(
-            [
-                ['id' => '', 'name' => 'all', 'count' => $totalCount ?: '0'],
-            ],
+//
+//    public function getData($params)
+//    {
+//
+//
+//        $query = Orders::find();
+//        $query->joinWith(['users', 'services']);
+//
+//        $this->load($params);
+////        print_r($this);die();
+////        $query->andFilterWhere([
+////            'orders.mode' => is_numeric($params['mode']) ? $params['mode'] : '',
+////            'services.id' => is_numeric($params['serviceType']) ? $params['serviceType'] : '',
+////            'orders.status' => is_numeric($params['status']) ? $params['status'] : ''
+////
+//////            'orders.mode' => is_numeric($this->mode) ? $this->mode : '',
+//////            'services.id' => is_numeric($this->serviceType) ? $this->serviceType : '',
+//////            'orders.status' => is_numeric($this->status) ? $this->status : ''
+////        ]);
+////        if ($this->searchWord) {
+////
+////            switch ($this->searchType) {
+////                case self::SEARCH_ORDER_ID:
+////                    $query->andWhere(['=', 'orders.id', $this->searchWord]);
+////                    break;
+////                case self::SEARCH_LINK:
+////                    $query->andWhere(['like', 'orders.link', $this->searchWord]);
+////                    break;
+////                case self::SEARCH_USERNAME:
+////                    $query->andWhere(
+////                        [
+////                            'like',
+////                            'CONCAT(users.first_name, " ", users.last_name)',
+////                            $this->searchWord
+////                        ]
+////                    );
+////                    break;
+////            }
+////        }
+//        return $query;
+//
+//    }
+//
+//    public static function getDataFiltered( ) {
+//        self::getData();
+//    }
 
-            $doneQuery
-        );
-        return  empty($doneQuery) ? [] : $doneQuery;
+//    public function setFilters($query)
+//    {
+//        $query->andFilterWhere([
+//            'orders.mode' => is_numeric($this->mode) ? $this->mode : '',
+//            'services.id' => is_numeric($this->serviceType) ? $this->serviceType : '',
+//            'orders.status' => is_numeric($this->status) ? $this->status : ''
+//        ]);
+//        if ($this->searchWord) {
+//
+//            switch ($this->searchType) {
+//                case self::SEARCH_ORDER_ID:
+//                    $query->andWhere(['=', 'orders.id', $this->searchWord]);
+//                    break;
+//                case self::SEARCH_LINK:
+//                    $query->andWhere(['like', 'orders.link', $this->searchWord]);
+//                    break;
+//                case self::SEARCH_USERNAME:
+//                    $query->andWhere(
+//                        [
+//                            'like',
+//                            'CONCAT(users.first_name, " ", users.last_name)',
+//                            $this->searchWord
+//                        ]
+//                    );
+//                    break;
+//            }
+//        }
+//        return $query;
+//    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function rules(): array
+    {
+        return [
+            [['userID',], 'integer'],
+            [['mode'], 'string'],
+            [['status', 'serviceType', 'serviceID', 'searchType', 'searchWord'], 'trim']
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function scenarios(): array
+    {
+        return Model::scenarios();
     }
 }

@@ -2,13 +2,13 @@
 
 namespace orders\widgets;
 
+use orders\models\Orders;
 use Yii;
 use yii\base\Widget;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
-use orders\models\Orders;
 
 /**
  * Class SearchForm
@@ -33,17 +33,37 @@ class SearchForm extends Widget
         parent::init();
         $this->activeForm = ActiveForm::class;
         $this->paramsForm = [
-            'action' => Url::current(['index', 'serviceType' => 'all', 'mode' => 'all', 'searchWord' => null, 'searchType' => null]),
+            'action' => Url::current([
+                'index', 'serviceType' => 'all',
+                'mode' => 'all', 'searchWord' => null, 'searchType' => null
+            ]),
             'method' => 'get',
             'options' => [
                 'class' => 'form-inline'
             ]
         ];
-        $this->paramsField = ['type' => 'text', 'attribute' => 'searchWord', 'placeholder' => Yii::t('app', 'search.placeholder'), 'label' => false];
-        $this->dropDown = Html::activeDropDownList($this->model, 'searchType', ArrayHelper::map(Orders::getSearchTypes(), 'id', 'type'), [
-            'class' => 'form-control search-select',
-        ]);
-        $this->submitButton = Html::submitButton("<span class='glyphicon glyphicon-search' aria-hidden='true'></span>", ['class' => 'btn btn-default']);
+        $this->paramsField = [
+            'type' => 'text',
+            'attribute' => 'searchWord',
+            'placeholder' => Yii::t('app', 'search.placeholder'),
+            'label' => false
+        ];
+        $this->dropDown = Html::activeDropDownList(
+            $this->model,
+            'searchType',
+            ArrayHelper::map(
+                Orders::getSearchTypes(),
+                'id',
+                'type'
+            ),
+            [
+                'class' => 'form-control search-select',
+            ]
+        );
+        $this->submitButton = Html::submitButton(
+            "<span class='glyphicon glyphicon-search' aria-hidden='true'></span>",
+            ['class' => 'btn btn-default']
+        );
     }
 
     /**
@@ -51,6 +71,16 @@ class SearchForm extends Widget
      */
     public function run(): string
     {
-        return $this->render('searchFormView', ['activeForm' => $this->activeForm, 'paramsForm' => $this->paramsForm, 'paramsField' => $this->paramsField, 'dropDown' => $this->dropDown, 'submitButton' => $this->submitButton, 'model' => $this->model]);
+        return $this->render(
+            'searchFormView',
+            [
+                'activeForm' => $this->activeForm,
+                'paramsForm' => $this->paramsForm,
+                'paramsField' => $this->paramsField,
+                'dropDown' => $this->dropDown,
+                'submitButton' => $this->submitButton,
+                'model' => $this->model
+            ]
+        );
     }
 }

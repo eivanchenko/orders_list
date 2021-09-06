@@ -1,4 +1,5 @@
 <?php
+
 use codemix\yii2confload\Config;
 
 require('/var/www/vendor/autoload.php');

@@ -2,10 +2,9 @@
 
 namespace orders\models;
 
+use orders\models\query\OrdersQuery;
 use Yii;
 use yii\db\ActiveRecord;
-use orders\models\query\OrdersQuery;
-
 
 
 /**
@@ -18,8 +17,8 @@ use orders\models\query\OrdersQuery;
  * @property mixed $serviceID
  * @property integer $status
  * @property integer $mode
- * @property string  $link
- * @property string  $fullName
+ * @property string $link
+ * @property string $fullName
  *
  * @property Users $users
  * @property Services $services
@@ -29,8 +28,11 @@ class Orders extends ActiveRecord
     const SEARCH_ORDER_ID = 1;
     const SEARCH_LINK = 2;
     const SEARCH_USERNAME = 3;
+
     const MODE_TYPE_MANUAL = 0;
     const MODE_TYPE_AUTO = 1;
+    const MODE_TYPE_ALL = 'all';
+
     const STATUS_TYPE_PENDING = 0;
     const STATUS_TYPE_PROGRESS = 1;
     const STATUS_TYPE_COMPLETED = 2;
@@ -45,6 +47,80 @@ class Orders extends ActiveRecord
         return 'orders';
     }
 
+    /**
+     * @return array
+     */
+    public static function getStatusType(): array
+    {
+        return [
+            [
+                'id' => self::STATUS_TYPE_PENDING,
+                'type' => Yii::t('app', 'status.type.pending')
+            ],
+            [
+                'id' => self::STATUS_TYPE_PROGRESS,
+                'type' => Yii::t('app', 'status.type.inProgress')
+            ],
+            [
+                'id' => self::STATUS_TYPE_COMPLETED,
+                'type' => Yii::t('app', 'status.type.completed')
+            ],
+            [
+                'id' => self::STATUS_TYPE_CANCELED,
+                'type' => Yii::t('app', 'status.type.canceled')
+            ],
+            [
+                'id' => self::STATUS_TYPE_ERROR,
+                'type' => Yii::t('app', 'status.type.error')
+            ],
+        ];
+    }
+
+    /**
+     * @return array[]
+     */
+    public static function getSearchTypes(): array
+    {
+        return [
+            [
+                'id' => self::SEARCH_ORDER_ID,
+                'type' => Yii::t('app', 'search.type.orderID')
+            ],
+            [
+                'id' => self::SEARCH_LINK,
+                'type' => Yii::t('app', 'search.type.link')
+            ],
+            [
+                'id' => self::SEARCH_USERNAME,
+                'type' => Yii::t('app', 'search.type.username')
+            ],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public static function getModeType(): array
+    {
+        return [
+            [
+                'id' => self::MODE_TYPE_MANUAL,
+                'name' => Yii::t('app', 'mode.manual')
+            ],
+            [
+                'id' => self::MODE_TYPE_AUTO,
+                'name' => Yii::t('app', 'mode.auto')
+            ]
+        ];
+    }
+
+    /**
+     * @return OrdersQuery
+     */
+    public static function find(): OrdersQuery
+    {
+        return new OrdersQuery(get_called_class());
+    }
 
     /**
      * {@inheritdoc}
@@ -118,43 +194,6 @@ class Orders extends ActiveRecord
     /**
      * @return array
      */
-    public static function getStatusType(): array
-    {
-        return [
-            ['id' => self::STATUS_TYPE_PENDING, 'type' => Yii::t('app', 'status.type.pending')],
-            ['id' => self::STATUS_TYPE_PROGRESS, 'type' => Yii::t('app', 'status.type.inProgress')],
-            ['id' => self::STATUS_TYPE_COMPLETED, 'type' => Yii::t('app', 'status.type.completed')],
-            ['id' => self::STATUS_TYPE_CANCELED, 'type' => Yii::t('app', 'status.type.canceled')],
-            ['id' => self::STATUS_TYPE_ERROR, 'type' => Yii::t('app', 'status.type.error')],
-        ];
-    }
-
-    /**
-     * @return array[]
-     */
-    public static function getSearchTypes(): array
-    {
-        return [
-            ['id' => self::SEARCH_ORDER_ID, 'type' =>  Yii::t('app', 'search.type.orderID')],
-            ['id' => self::SEARCH_LINK, 'type' => Yii::t('app',  'search.type.link')],
-            ['id' => self::SEARCH_USERNAME, 'type' => Yii::t('app',  'search.type.username')],
-        ];
-    }
-
-    /**
-     * @return array
-     */
-    public static function getModeType(): array
-    {
-        return [
-            ['id' => self::MODE_TYPE_MANUAL, 'type' => Yii::t('app', 'mode.manual')],
-            ['id' => self::MODE_TYPE_AUTO, 'type' => Yii::t('app', 'mode.auto')]
-        ];
-    }
-
-    /**
-     * @return array
-     */
     public function attributeLabels(): array
     {
         return [
@@ -168,13 +207,5 @@ class Orders extends ActiveRecord
             'mode' => Yii::t('app', 'label.mode'),
             'created_at' => Yii::t('app', 'label.created'),
         ];
-    }
-
-    /**
-     * @return OrdersQuery
-     */
-    public static function find(): OrdersQuery
-    {
-        return new OrdersQuery(get_called_class());
     }
 }

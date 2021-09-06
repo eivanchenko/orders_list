@@ -10,5 +10,4 @@ vendor/
 *.bak
 *.swp
 .vimrc
-modules/orders/widgets/MainDropDown.php
-modules/orders/widgets/views/mainDDView.php
+modules/orders/models/search/OrdersSearch.php

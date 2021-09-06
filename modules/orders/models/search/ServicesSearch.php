@@ -2,8 +2,8 @@
 
 namespace orders\models\search;
 
-use yii\base\Model;
 use orders\models\Services;
+use yii\base\Model;
 
 /**
  * Class ServicesSearch
