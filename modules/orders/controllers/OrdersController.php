@@ -5,6 +5,7 @@ namespace orders\controllers;
 use orders\models\search\OrdersSearch;
 use Yii;
 use yii\web\Controller;
+use yii\web\Response;
 
 /**
  * Class OrdersController
@@ -28,17 +29,12 @@ class OrdersController extends Controller
 
     }
 
-
     /**
-     * @return array
+     * @return Response
      */
-    public function actions(): array
+    public function actionError(): Response
     {
-        return [
-            'error' => [
-                'class' => 'yii\web\ErrorAction',
-            ]
-        ];
+        return $this->redirect(['orders/index']);
     }
 
 }

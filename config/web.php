@@ -28,7 +28,7 @@ return [
         '@bower' => '/var/www/vendor/bower-asset',
         '@npm' => '/var/www/vendor/npm-asset',
         '@orders' => '/var/www/html/modules/orders',
-        '@ordersUrl'=> 'orders/index'
+        '@ordersUrl' => 'orders/index'
 
     ],
     'defaultRoute' => 'orders/orders/index',
@@ -90,6 +90,7 @@ return [
             'showScriptName' => false,
             'rules' => [
                 '/orders' => 'orders/orders/index',
+                '/' => 'orders/orders/error',
                 '<module:\w+>' => '<module>',
                 '<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
             ]
