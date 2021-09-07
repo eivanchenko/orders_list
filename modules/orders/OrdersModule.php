@@ -2,11 +2,13 @@
 
 namespace orders;
 
+use yii\base\Module;
+
 /**
  * Class OrdersModule
  * @package orders
  */
-class OrdersModule extends \yii\base\Module
+class OrdersModule extends Module
 {
     /**
      * @inheritdoc

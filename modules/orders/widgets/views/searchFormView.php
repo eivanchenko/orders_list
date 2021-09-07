@@ -18,7 +18,7 @@ use yii\helpers\Html;
     <?php $form = $activeForm::begin($paramsForm) ?>
     <div class="input-group">
 
-        <?= $form->field($model, $paramsField['attribute'])->textInput()->
+        <?= $form->field($model, $paramsField['attribute'], ['template' => "{label}\n{input}"])->textInput()->
         input($paramsField['type'], ['placeholder' => $paramsField['placeholder']])->label($paramsField['label']); ?>
         <?= Html::beginTag('span', ['class' => 'input-group-btn search-select-wrap']) ?>
         <?= $dropDown ?>

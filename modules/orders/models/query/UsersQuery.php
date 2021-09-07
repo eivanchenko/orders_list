@@ -15,7 +15,7 @@ class UsersQuery extends ActiveQuery
     /**
      * {@inheritDoc}
      */
-    public function all($db = null)
+    public function all($db = null): array
     {
         return parent::all($db);
     }

@@ -2,8 +2,10 @@
 
 namespace orders\widgets;
 
+use Exception;
 use orders\components\OrdersHelpers;
 use Yii;
+use yii\base\Widget;
 use yii\bootstrap\Dropdown;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
@@ -12,7 +14,7 @@ use yii\helpers\Url;
  * Class MainDropDown
  * @package orders\widgets
  */
-class MainDropDown extends \yii\base\Widget
+class MainDropDown extends Widget
 {
     public $typeDD;
     public $dropDown;
@@ -22,7 +24,7 @@ class MainDropDown extends \yii\base\Widget
 
     /**
      * {@inheritDoc}
-     * @throws \Exception
+     * @throws Exception
      */
     public function init()
     {
@@ -51,8 +53,6 @@ class MainDropDown extends \yii\base\Widget
                         'url' => Url::current([$this->typeDD => 'all']),
                         'options' => [
                             'class' =>
-//                                ($testExpression || Yii::$app->request->getQueryParam($this->typeDD) == null) ? 'active' : null;
-
                                 OrdersHelpers::getActiveClass($this->typeDD, 'all')
 
                         ]

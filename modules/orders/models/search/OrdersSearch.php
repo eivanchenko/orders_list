@@ -18,6 +18,8 @@ use yii\helpers\ArrayHelper;
 class OrdersSearch extends Orders
 {
     const PAGE_SIZE = 100;
+    const SERVICE_TYPE_ALL = 'all';
+    const PARAMETER_ALL = 'all';
 
     public $fullName;
     public $status;
@@ -27,15 +29,13 @@ class OrdersSearch extends Orders
     public $searchWord;
     public $mode;
 
-
     /**
      * @return array
      */
-    public static function getServicesTypesCount(): array
+    public function getServicesTypesCount(): array
     {
-        $queryParams = Yii::$app->request->queryParams ?: ['mode' => 'all'];
-        $ordersSearch = new OrdersSearch();
-        $mainQuery = $ordersSearch->search($queryParams, true);
+        $queryParams = Yii::$app->request->queryParams ?: ['mode' => self::MODE_TYPE_ALL];
+        $mainQuery = $this->getDataFiltering($queryParams);
         $subQuery = (new Query())->
         select(['service_id AS id', 'count(*) AS count'])->
         from(['subQuery' => $mainQuery])->
@@ -44,7 +44,8 @@ class OrdersSearch extends Orders
 
         $doneQuery = (new Query())->
         select(['services.id', 'services.name', 'main.count'])->
-        from(['services'])->join('LEFT JOIN', ['main' => $subQuery], 'main.id = services.id')->
+        from(['services'])->join('LEFT JOIN', ['main' => $subQuery],
+            'main.id = services.id')->
         orderBy(['main.count' => SORT_DESC])->all();
         $totalCount = array_reduce(
             $doneQuery,
@@ -54,7 +55,7 @@ class OrdersSearch extends Orders
         );
         $doneQuery = ArrayHelper::merge(
             [
-                ['id' => '', 'name' => 'all', 'count' => $totalCount ?: '0'],
+                ['id' => '', 'name' => self::SERVICE_TYPE_ALL, 'count' => $totalCount ?: '0'],
             ],
 
             $doneQuery
@@ -63,33 +64,46 @@ class OrdersSearch extends Orders
     }
 
     /**
-     * @param array $params
-     * @param boolean $rawRequest used when a raw query is needed
-     * @return OrdersQuery|ActiveDataProvider
+     * @param $params
+     * @return OrdersQuery
      */
-    public function search(array $params, bool $rawRequest = false)
+    public function getDataFiltering($params): OrdersQuery
     {
-        $query = Orders::find();
-        $query->joinWith(['users', 'services']);
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-            'pagination' => [
-                'pageSize' => self::PAGE_SIZE,
-            ],
-        ]);
+        $this->setParams($params);
+        return $this->ordersFilter();
+    }
 
-        $dataProvider->setSort([
-            'defaultOrder' => ['id' => SORT_DESC],
-        ]);
+    /**
+     * @param $params
+     */
+    public function setParams($params)
+    {
+        $this->mode = $params['mode'] ?? null;
+        $this->status = $params['status'] ?? null;
+        $this->serviceType = $params['serviceType'] ?? null;
+        $this->searchWord = $params['searchWord'] ?? null;
+        $this->searchType = $params['searchType'] ?? null;
+    }
 
-        if (!($this->load($params) && $this->validate())) {
-            return $dataProvider;
+    /**
+     * @return OrdersQuery
+     */
+    public function ordersFilter(): OrdersQuery
+    {
+        $query = $this->newSearch();
+        if (!$this->validate()) {
+            return $query;
         }
-        $query->andFilterWhere([
-            'orders.mode' => is_numeric($this->mode) ? $this->mode : '',
-            'services.id' => is_numeric($this->serviceType) ? $this->serviceType : '',
-            'orders.status' => is_numeric($this->status) ? $this->status : ''
-        ]);
+
+        if (isset($this->status)) {
+            $query->andFilterWhere(['orders.status' => $this->status]);
+        }
+        if (isset($this->mode)) {
+            $query->andFilterWhere(['orders.mode' => $this->mode]);
+        }
+        if (isset($this->serviceType)) {
+            $query->andFilterWhere(['services.id' => $this->serviceType]);
+        }
 
         if ($this->searchWord) {
 
@@ -111,8 +125,37 @@ class OrdersSearch extends Orders
                     break;
             }
         }
+        return $query;
+    }
 
-        return $rawRequest ? $query : $dataProvider;
+
+    /**
+     * @return OrdersQuery
+     */
+    public function newSearch(): OrdersQuery
+    {
+        $query = Orders::find();
+        $query->joinWith(['users', 'services']);
+        return $query;
+    }
+
+    /**
+     * @param $params
+     * @return ActiveDataProvider
+     */
+    public function getReadyData($params): ActiveDataProvider
+    {
+        $data = $this->getDataFiltering($params);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $data,
+            'pagination' => [
+                'pageSize' => self::PAGE_SIZE,
+            ],
+        ]);
+        $dataProvider->setSort([
+            'defaultOrder' => ['id' => SORT_DESC],
+        ]);
+        return $dataProvider;
     }
 
     /**
@@ -121,11 +164,60 @@ class OrdersSearch extends Orders
     public function rules(): array
     {
         return [
-            [['userID',], 'integer'],
-            [['mode'], 'string'],
-            [['status', 'serviceType', 'serviceID', 'searchType', 'searchWord'], 'trim']
+            [
+                'status',
+                'in',
+                'range' => ArrayHelper::merge(
+                    array_keys(self::getStatusType()),
+                    [self::STATUS_TYPE_ALL]
+                ),
+            ],
+            [
+                'mode',
+                'in',
+                'range' => ArrayHelper::merge(
+                    array_keys(self::getModeType()),
+                    [self::MODE_TYPE_ALL]
+                ),
+
+            ],
+
+            [['serviceType', 'mode', 'status'],
+                'filter',
+                'filter' => function ($value) {
+                    return $value === self::PARAMETER_ALL ? '' : $value;
+                }
+            ],
+            [
+                'searchType',
+                'in',
+                'range' => [
+                    self::SEARCH_ORDER_ID,
+                    self::SEARCH_LINK,
+                    self::SEARCH_USERNAME],
+            ],
+            [
+                'searchWord',
+                'string',
+                'min' => 1,
+                'max' => 350
+            ],
+            [
+                [
+                    'id',
+                    'serviceType',
+                    'serviceID',
+                    'userID',
+                    'link',
+                    'quantity',
+                    'created_at'
+                ],
+                'safe',
+            ],
+            [['serviceID', 'searchType', 'searchWord'], 'trim']
         ];
     }
+
 
     /**
      * {@inheritdoc}

@@ -19,14 +19,15 @@ class OrdersController extends Controller
     public function actionIndex(): string
     {
         $this->view->title = $_ENV['COMPOSE_PROJECT_NAME'];
-        $searchModel = new OrdersSearch();
-
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $model = new OrdersSearch();
+        $query = $model->getReadyData(Yii::$app->request->get());
         return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+            'searchModel' => $model,
+            'dataProvider' => $query,
         ]);
+
     }
+
 
     /**
      * @return array
@@ -39,4 +40,5 @@ class OrdersController extends Controller
             ]
         ];
     }
+
 }

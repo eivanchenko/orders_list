@@ -4,6 +4,7 @@ namespace orders\models;
 
 use orders\models\query\OrdersQuery;
 use Yii;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
 
@@ -33,6 +34,7 @@ class Orders extends ActiveRecord
     const MODE_TYPE_AUTO = 1;
     const MODE_TYPE_ALL = 'all';
 
+    const STATUS_TYPE_ALL = 'all';
     const STATUS_TYPE_PENDING = 0;
     const STATUS_TYPE_PROGRESS = 1;
     const STATUS_TYPE_COMPLETED = 2;
@@ -128,8 +130,8 @@ class Orders extends ActiveRecord
     public function rules(): array
     {
         return [
-            [['id', 'userID', 'quantity', 'serviceID', 'mode'], 'integer'],
-            ['link', 'string'],
+            [['id', 'userID', 'quantity', 'mode'], 'integer'],
+            ['link', 'string', 'max' => 300],
             [['fullName', 'status', 'serviceType', 'serviceID'], 'safe']
 
         ];
@@ -144,17 +146,17 @@ class Orders extends ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
-    public function getUsers(): \yii\db\ActiveQuery
+    public function getUsers(): ActiveQuery
     {
         return $this->hasOne(Users::class, ['id' => 'user_id']);
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
-    public function getServices(): \yii\db\ActiveQuery
+    public function getServices(): ActiveQuery
     {
         return $this->hasOne(Services::class, ['id' => 'service_id']);
     }

@@ -2,6 +2,7 @@
 
 namespace orders\widgets;
 
+use Exception;
 use orders\components\OrdersHelpers;
 use orders\models\Orders;
 use Yii;
@@ -27,7 +28,7 @@ class StatusLink extends Widget
     /**
      * {@inheritDoc}
      * @return string|null
-     * @throws \Exception
+     * @throws Exception
      */
     public function run(): ?string
     {
@@ -85,7 +86,7 @@ class StatusLink extends Widget
                     Html::endTag('li')
                 );
             }
-        };
+        }
         return $statusLinks ? implode('', $statusLinks) : null;
     }
 }

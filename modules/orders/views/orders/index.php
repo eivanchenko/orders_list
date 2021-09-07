@@ -9,6 +9,7 @@ use orders\widgets\OrdersGridView;
  * @var  $dataProvider  yii\data\ActiveDataProvider
  */
 ?>
+
 <div class="container-fluid">
     <?= $this->render('_search', ['model' => $searchModel]) ?>
     <?= OrdersGridView::widget(['dataProvider' => $dataProvider, 'model' => $searchModel]) ?>

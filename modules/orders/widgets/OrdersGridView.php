@@ -4,7 +4,6 @@ namespace orders\widgets;
 
 use Exception;
 use orders\models\Orders;
-use orders\models\search\OrdersSearch;
 use Yii;
 use yii\base\Widget;
 use yii\grid\GridView;
@@ -43,7 +42,7 @@ class OrdersGridView extends Widget
                     'headerOptions' => ['class' => 'dropdown-th'],
                     'header' => MainDropDown::widget([
                         'typeDD' => 'serviceType',
-                        'data' => OrdersSearch::getServicesTypesCount(),
+                        'data' => $this->model->getServicesTypesCount(),
                         'dropDownLabel' => 'label.service']),
                     'value' => function ($model) {
                         return '<span class="label-id"> ' . $model->serviceID .

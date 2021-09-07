@@ -88,11 +88,10 @@ return [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'enableStrictParsing' => true,
             'rules' => [
                 '/orders' => 'orders/orders/index',
-                // '<module>:\w+' => '<module>'
-
+                '<module:\w+>' => '<module>',
+                '<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
             ]
 
         ],
